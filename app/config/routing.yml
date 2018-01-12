@@ -1,8 +1,3 @@
-tag:
-    resource: "@TagBundle/Controller/"
-    type:     annotation
-    prefix:   /
-
 front:
     resource: "@AppBundle/Controller/Front"
     type:     rest
