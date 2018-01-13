@@ -17,7 +17,7 @@ class ApiController extends Controller
         try {
             $users = $this->getDoctrine()->getManager()->getRepository('AppBundle:User')->findAll();
             if (empty($users)) {
-                throw new NotFoundHttpException("There is nos users");
+                throw new NotFoundHttpException("There is no users");
             }
         } catch (NotFoundHttpException $e) {
             return JsonResponse::create([

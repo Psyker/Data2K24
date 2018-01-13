@@ -19,33 +19,33 @@ class LivingPlace
     /**
      * @var District
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\District", inversedBy="livingPlaces")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $disctrict;
+    private $district;
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=false, name="arr")
+     * @ORM\Column(type="integer", nullable=true, name="arr")
      */
     private $arr;
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="address", nullable=false)
+     * @ORM\Column(type="string", name="address", nullable=true)
      */
     private $address;
 
     /**
      * @var array
-     * @ORM\Column(type="simple_array", name="coordinates", nullable=false)
+     * @ORM\Column(type="simple_array", name="coordinates", nullable=true)
      */
     private $coordinates;
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="condition" ,nullable=false)
+     * @ORM\Column(type="string", name="situation" ,nullable=true)
      */
-    private $condition;
+    private $situation;
 
     /**
      * @var string
@@ -55,19 +55,19 @@ class LivingPlace
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="activity_label", nullable=false)
+     * @ORM\Column(type="string", name="activity_label", nullable=true)
      */
     private $activityLabel;
 
     /**
      * @var int
-     * @ORM\Column(type="smallint", nullable=false, name="area")
+     * @ORM\Column(type="smallint", nullable=true, name="area")
      */
     private $area;
 
     /**
      * @var int
-     * @ORM\Column(type="integer", name="ccid", nullable=false)
+     * @ORM\Column(type="integer", name="ccid", nullable=true)
      */
     private $Ccid;
 
@@ -150,18 +150,18 @@ class LivingPlace
     /**
      * @return string
      */
-    public function getCondition(): string
+    public function getSituation(): string
     {
-        return $this->condition;
+        return $this->situation;
     }
 
     /**
      * @param string $condition
      * @return LivingPlace
      */
-    public function setCondition(string $condition): LivingPlace
+    public function setSituation(string $condition): LivingPlace
     {
-        $this->condition = $condition;
+        $this->situation = $condition;
 
         return $this;
     }
@@ -244,6 +244,6 @@ class LivingPlace
 
     public function setDistrict(District $district)
     {
-        $this->disctrict = $district;
+        $this->district = $district;
     }
 }

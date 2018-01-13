@@ -24,6 +24,12 @@ class District
     private $livingPlaces;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false, name="geo_shape_type")
+     */
+    private $geoShapeType;
+
+    /**
      * @var array
      * @ORM\Column(type="json_array", name="geo_shape", nullable=false)
      */
@@ -490,6 +496,25 @@ class District
     public function setP12Pop001(float $p12Pop001): District
     {
         $this->p12Pop001 = $p12Pop001;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getGeoShapeType(): string
+    {
+        return $this->geoShapeType;
+    }
+
+    /**
+     * @param string $geoShapeType
+     * @return District
+     */
+    public function setGeoShapeType(string $geoShapeType): District
+    {
+        $this->geoShapeType = $geoShapeType;
 
         return $this;
     }
