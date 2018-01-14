@@ -18,7 +18,13 @@ class Station
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="name", nullable=false)
+     * @ORM\Column(type="string", unique=true, nullable=false, name="record_id")
+     */
+    private $recordId;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string" ,name="name", nullable=false)
      */
     private $name;
 
@@ -30,7 +36,7 @@ class Station
 
     /**
      * @var array
-     * @ORM\Column(type="simple_array", name="coordinates", nullable=false)
+     * @ORM\Column(type="simple_array" ,name="coordinates", nullable=false)
      */
     private $coordinates;
 
@@ -156,6 +162,25 @@ class Station
     public function setInseeCode(int $InseeCode): Station
     {
         $this->InseeCode = $InseeCode;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRecordId(): string
+    {
+        return $this->recordId;
+    }
+
+    /**
+     * @param string $recordId
+     * @return Station
+     */
+    public function setRecordId(string $recordId): Station
+    {
+        $this->recordId = $recordId;
 
         return $this;
     }

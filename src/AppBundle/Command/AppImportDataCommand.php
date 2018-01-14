@@ -4,6 +4,7 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\District;
 use AppBundle\Entity\LivingPlace;
+use AppBundle\Entity\Station;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
@@ -16,9 +17,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class AppImportDataCommand extends ContainerAwareCommand
 {
-    CONST DATA_MAX = 1000;
-    CONST BASE_URI_OP_PARIS = 'https://opendata.paris.fr/api/records/1.0/search/';
-    CONST BASE_URI_OPS = 'https://public.opendatasoft.com/api/records/1.0/search/';
+
+    private $livingPlaceSchema = [
+            'codact' => "setActivityCode",
+            'xy' => 'setCoordinates',
+            'arro' => 'setArr',
+            'adresse_complete' => 'setAddress',
+            'libact' => 'setActivityLabel',
+            'type_voie' => 'setSituation',
+            'surface' => 'setArea'
+    ];
 
     /**
      * @var ContainerInterface
@@ -45,40 +53,80 @@ class AppImportDataCommand extends ContainerAwareCommand
         ;
     }
 
-    private function createLivingPlaces()
+
+
+    private function createEntities(string $apiUri, $entity, array $model)
     {
-        $livingPlaceApiUri = self::BASE_URI_OP_PARIS.'?dataset=commercesparis';
-        $response = $this->client->get($livingPlaceApiUri);
-        $countData = intval($this->decode($response)['nhits']);
-        $start = 0;
-        for ($i = 1; $i <= round($countData/self::DATA_MAX); $i++) {
-            $dataResponse = $this->decode($this->client->get($livingPlaceApiUri.'&rows='.self::DATA_MAX.'&start='.$start));
-            foreach ($dataResponse['records'] as $itemData) {
+        @ini_set('memory_limit', -1);
+        $response = $this->decode($this->client->get($apiUri));
+        $chunkSize = 500;
+        $index = 0;
+        foreach ($response as $itemData) {
+            $newEntity = $this->setDataByModel($model, $itemData['fields'], new $entity());
+            $this->em->persist($newEntity);
+            $index++;
+            if (($index % $chunkSize) == 0) {
+                $this->em->flush();
+                $this->em->clear();
+            }
+        }
+        $this->em->flush();
+        $this->em->clear();
+    }
+
+
+    private function createStations()
+    {
+        @ini_set('memory_limit', -1);
+        $stationApiUri = 'http://data.ratp.fr/explore/dataset/positions-geographiques-des-stations-du-reseau-ratp/download/?format=json&timezone=Europe/Berlin';
+        $response = $this->decode($this->client->get($stationApiUri));
+            foreach ($response as $itemData) {
                 $itemDataFields = $itemData['fields'];
-                $newLivingPlace = (new LivingPlace())
-                    ->setActivityCode($itemDataFields['codact'])
-                    ->setCoordinates($itemDataFields['xy'])
-                    ->setArr($itemDataFields['arro'])
-                    ->setAddress($itemDataFields['adresse_complete'])
-                    ->setActivityLabel($itemDataFields['libact'])
-                    ->setSituation($itemDataFields['type_voie'])
-                    ->setArea($itemDataFields['surface']);
-                $this->em->persist($newLivingPlace);
+                $newStation = (new Station())
+                    ->setRecordId($itemData['recordid'])
+                    ->setName($itemDataFields['stop_name'])
+                    ->setDepartement($itemDataFields['departement'])
+                    ->setCoordinates($itemDataFields['coord'])
+                    ->setInseeCode($itemDataFields['code_postal'])
+                    ->setDescription($itemDataFields['stop_desc']);
+                $this->em->persist($newStation);
             }
             $this->em->flush();
-        }
+            $this->em->clear();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->createLivingPlaces();
+        $this->em->getConnection()->query('TRUNCATE TABLE living_place')->execute();
+        $this->em->getConnection()->query('TRUNCATE TABLE station')->execute();
+        $this->createEntities(
+            'https://opendata.paris.fr/explore/dataset/commercesparis/download/?format=json&timezone=Europe/Berlin',
+            'AppBundle\\Entity\\LivingPlace',
+            $this->livingPlaceSchema
+        );
+
     }
-
-
 
     private function decode(ResponseInterface $response)
     {
         return json_decode($response->getBody()->getContents(), true);
+    }
+
+    /**
+     * @param array $model
+     * @param array $data
+     * @param $entity
+     * @return mixed
+     */
+    private function setDataByModel(array $model, array $data, $entity)
+    {
+        foreach ($model as $key => $function) {
+            if (array_key_exists($key, $data)) {
+                $entity->set($function, $data[$key]);
+            }
+        }
+
+        return $entity;
     }
 
 }

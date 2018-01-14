@@ -49,7 +49,7 @@ class LivingPlace
 
     /**
      * @var string
-     * @ORM\Column(type="string", name="activity_code", nullable=false)
+     * @ORM\Column(type="string", name="activity_code", nullable=true)
      */
     private $activityCode;
 
@@ -64,12 +64,6 @@ class LivingPlace
      * @ORM\Column(type="smallint", nullable=true, name="area")
      */
     private $area;
-
-    /**
-     * @var int
-     * @ORM\Column(type="integer", name="ccid", nullable=true)
-     */
-    private $Ccid;
 
     /**
      * @return mixed
@@ -223,27 +217,15 @@ class LivingPlace
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getCcid(): int
-    {
-        return $this->Ccid;
-    }
-
-    /**
-     * @param int $Ccid
-     * @return LivingPlace
-     */
-    public function setCcid(int $Ccid): LivingPlace
-    {
-        $this->Ccid = $Ccid;
-
-        return $this;
-    }
-
     public function setDistrict(District $district)
     {
         $this->district = $district;
+    }
+
+    public function set($function, $value)
+    {
+        $this->$function($value);
+
+        return $this;
     }
 }
