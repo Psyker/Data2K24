@@ -24,16 +24,10 @@ class District
     private $livingPlaces;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", nullable=false, name="geo_shape_type")
-     */
-    private $geoShapeType;
-
-    /**
      * @var array
-     * @ORM\Column(type="json_array", name="geo_shape", nullable=false)
+     * @ORM\Column(type="simple_array", nullable=false, name="geo_point")
      */
-    private $geoShape;
+    private $geoPoint;
 
     /**
      * @var string
@@ -97,43 +91,43 @@ class District
 
     /**
      * @var float
-     * @ORM\Column(type="float", name="p12_f1529", nullable=false)
+     * @ORM\Column(type="float", name="p12_f1529", nullable=true)
      */
     private $p12F1529;
 
     /**
      * @var float
-     * @ORM\Column(type="float", name="p12_f3044", nullable=false)
+     * @ORM\Column(type="float", name="p12_f3044", nullable=true)
      */
     private $p12F3044;
 
     /**
      * @var float
-     * @ORM\Column(type="float", name="p12_f4559", nullable=false)
+     * @ORM\Column(type="float", name="p12_f4559", nullable=true)
      */
     private $p12F4559;
 
     /**
      * @var float
-     * @ORM\Column(type="float", name="p12_f6074", nullable=false)
+     * @ORM\Column(type="float", name="p12_f6074", nullable=true)
      */
     private $p12F6074;
 
     /**
      * @var float
-     * @ORM\Column(type="float", name="p12_f75p", nullable=false)
+     * @ORM\Column(type="float", name="p12_f75p", nullable=true)
      */
     private $p12F75p;
 
     /**
      * @var float
-     * @ORM\Column(type="float", name="p12_pop60", nullable=false)
+     * @ORM\Column(type="float", name="p12_pop60", nullable=true)
      */
     private $p12Pop60;
 
     /**
      * @var float
-     * @ORM\Column(type="float", name="p12_pop001", nullable=false)
+     * @ORM\Column(type="float", name="p12_pop001", nullable=true)
      */
     private $p12Pop001;
 
@@ -161,18 +155,18 @@ class District
     /**
      * @return array
      */
-    public function getGeoShape(): array
+    public function getGeoPoint(): array
     {
-        return $this->geoShape;
+        return $this->geoPoint;
     }
 
     /**
-     * @param array $geoShape
+     * @param array $geoPoint
      * @return District
      */
-    public function setGeoShape(array $geoShape): District
+    public function setGeoPoint(array $geoPoint): District
     {
-        $this->geoShape = $geoShape;
+        $this->geoPoint = $geoPoint;
 
         return $this;
     }
@@ -500,21 +494,9 @@ class District
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getGeoShapeType(): string
+    public function set($function, $value)
     {
-        return $this->geoShapeType;
-    }
-
-    /**
-     * @param string $geoShapeType
-     * @return District
-     */
-    public function setGeoShapeType(string $geoShapeType): District
-    {
-        $this->geoShapeType = $geoShapeType;
+        $this->$function($value);
 
         return $this;
     }

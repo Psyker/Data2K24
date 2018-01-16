@@ -18,15 +18,15 @@ class Station
 
     /**
      * @var string
-     * @ORM\Column(type="string", unique=true, nullable=false, name="record_id")
-     */
-    private $recordId;
-
-    /**
-     * @var string
      * @ORM\Column(type="string" ,name="name", nullable=false)
      */
     private $name;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", name="zip_code", nullable=true)
+     */
+    private $zipCode;
 
     /**
      * @var string
@@ -48,9 +48,9 @@ class Station
 
     /**
      * @var int
-     * @ORM\Column(type="integer", name="insee_code", nullable=false)
+     * @ORM\Column(type="integer", name="stop_id", nullable=false)
      */
-    private $InseeCode;
+    private $stopId;
 
     /**
      * @return mixed
@@ -150,37 +150,44 @@ class Station
     /**
      * @return int
      */
-    public function getInseeCode(): int
+    public function getStopId(): int
     {
-        return $this->InseeCode;
+        return $this->stopId;
     }
 
     /**
-     * @param int $InseeCode
+     * @param int $stopId
      * @return Station
      */
-    public function setInseeCode(int $InseeCode): Station
+    public function setStopId(int $stopId): Station
     {
-        $this->InseeCode = $InseeCode;
+        $this->stopId = $stopId;
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getRecordId(): string
+    public function getZipCode(): int
     {
-        return $this->recordId;
+        return $this->zipCode;
     }
 
     /**
-     * @param string $recordId
+     * @param int $zipCode
      * @return Station
      */
-    public function setRecordId(string $recordId): Station
+    public function setZipCode(int $zipCode): Station
     {
-        $this->recordId = $recordId;
+        $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    public function set($function, $value)
+    {
+        $this->$function($value);
 
         return $this;
     }
