@@ -5,6 +5,7 @@ namespace AppBundle\Command;
 use AppBundle\Entity\District;
 use AppBundle\Entity\LivingPlace;
 use AppBundle\Entity\Station;
+use AppBundle\Entity\StationTrafic;
 use Doctrine\ORM\EntityManager;
 use GuzzleHttp\Client;
 use Psr\Container\ContainerInterface;
@@ -51,6 +52,15 @@ class AppImportDataCommand extends ContainerAwareCommand
         'p12_pop001' => 'setP12Pop001'
     ];
 
+    private $stationTraficSchema = [
+        'ville' => 'setCity',
+        'rang' => 'setRank',
+        'reseau' => 'setNetwork',
+        'trafic' => 'setTrafic',
+        'station' => 'setStation',
+        'arrondissement_pour_paris' => 'setArr'
+    ];
+
     /**
      * @var ContainerInterface
      */
@@ -76,7 +86,7 @@ class AppImportDataCommand extends ContainerAwareCommand
         ;
     }
 
-    private function createEntities(string $apiUri, $entity, array $model, OutputInterface $output)
+    private function createEntities(string $apiUri, string $entity, array $model, OutputInterface $output)
     {
         @ini_set('memory_limit', -1);
         $output->writeln([
@@ -93,6 +103,15 @@ class AppImportDataCommand extends ContainerAwareCommand
         $progressBar->start();
         foreach ($response as $itemData) {
             $newEntity = $this->setDataByModel($model, $itemData['fields'], new $entity());
+            if ($entity === Station::class) {
+                /** @var StationTrafic $stationTrafic */
+                if (!empty($stationTrafic = $this->em->getRepository(StationTrafic::class)->findOneBy([
+                    'stationName' => strtoupper($itemData['fields']['stop_name'])
+                ]))) {
+                    /** @var $entity Station */
+                    $newEntity->setTrafic($stationTrafic);
+                }
+            }
             $this->em->persist($newEntity);
             $index++;
             $progressBar->advance();
@@ -113,9 +132,12 @@ class AppImportDataCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->em->getConnection()->query('SET foreign_key_checks = 0;')->execute();
         $this->em->getConnection()->query('TRUNCATE TABLE living_place')->execute();
+        $this->em->getConnection()->query('TRUNCATE TABLE station_trafic')->execute();
         $this->em->getConnection()->query('TRUNCATE TABLE station')->execute();
         $this->em->getConnection()->query('TRUNCATE TABLE district')->execute();
+        $this->em->getConnection()->query('SET foreign_key_checks = 1;')->execute();
 
         // Create Districts from json export.
         $this->createEntities(
@@ -133,6 +155,13 @@ class AppImportDataCommand extends ContainerAwareCommand
             $output
         );
 
+        $this->createEntities(
+            'https://dataratp2.opendatasoft.com/explore/dataset/trafic-annuel-entrant-par-station-du-reseau-ferre-2016/download/?format=json&timezone=Europe/Berlin',
+            StationTrafic::class,
+            $this->stationTraficSchema,
+            $output
+        );
+
         // Create Stations from json export.
         $this->createEntities(
             'https://data.ratp.fr/explore/dataset/positions-geographiques-des-stations-du-reseau-ratp/download/?format=json&timezone=Europe/Berlin',
@@ -140,14 +169,11 @@ class AppImportDataCommand extends ContainerAwareCommand
             $this->stationSchema,
             $output
         );
-
-
-
     }
 
     private function decode(ResponseInterface $response)
     {
-        return json_decode($response->getBody()->getContents(), true);
+        return json_decode(utf8_encode($response->getBody()->getContents()), true);
     }
 
     /**

@@ -23,6 +23,13 @@ class Station
     private $name;
 
     /**
+     * @var $trafic StationTrafic
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\StationTrafic", inversedBy="station")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $trafic;
+
+    /**
      * @var int
      * @ORM\Column(type="integer", name="zip_code", nullable=true)
      */
@@ -181,6 +188,25 @@ class Station
     public function setZipCode(int $zipCode): Station
     {
         $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    /**
+     * @return StationTrafic
+     */
+    public function getTrafic(): StationTrafic
+    {
+        return $this->trafic;
+    }
+
+    /**
+     * @param StationTrafic $trafic
+     * @return Station
+     */
+    public function setTrafic(StationTrafic $trafic): Station
+    {
+        $this->trafic = $trafic;
 
         return $this;
     }

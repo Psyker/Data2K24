@@ -18,12 +18,6 @@ class District
     private $id;
 
     /**
-     * @var LivingPlace[]
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\LivingPlace", mappedBy="disctrictId")
-     */
-    private $livingPlaces;
-
-    /**
      * @var array
      * @ORM\Column(type="simple_array", nullable=false, name="geo_point")
      */
@@ -130,19 +124,6 @@ class District
      * @ORM\Column(type="float", name="p12_pop001", nullable=true)
      */
     private $p12Pop001;
-
-    public function __construct()
-    {
-        $this->livingPlaces = new ArrayCollection();
-    }
-
-    /**
-     * @return LivingPlace[]|ArrayCollection
-     */
-    public function getLivingPlaces()
-    {
-        return $this->livingPlaces;
-    }
 
     /**
      * @return mixed

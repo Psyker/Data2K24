@@ -17,13 +17,6 @@ class LivingPlace
     private $id;
 
     /**
-     * @var District
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\District", inversedBy="livingPlaces")
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $district;
-
-    /**
      * @var int
      * @ORM\Column(type="integer", nullable=true, name="arr")
      */
@@ -215,11 +208,6 @@ class LivingPlace
         $this->area = $area;
 
         return $this;
-    }
-
-    public function setDistrict(District $district)
-    {
-        $this->district = $district;
     }
 
     public function set($function, $value)
