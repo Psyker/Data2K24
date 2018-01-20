@@ -1,4 +1,4 @@
-server 'ssh.cluster023.hosting.ovh.net', user: fetch(:ssh_user), port: 22, roles: %w{web}
+server '163.172.137.80', user: fetch(:ssh_user), port: 22, roles: %w{web}
 
 set :branch, 'master'
 set :symfony_env, 'prod'

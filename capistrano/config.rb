@@ -1,9 +1,9 @@
 # config valid only for current version of Capistrano
-lock '3.10.0'
+lock '3.10.1'
 
 set :application, 'fluidmap'
 set :deploy_to, '/var/www/fluidmap'
-set :repo_url, 'git@github.com:Psyker/FluidMap.git'
+set :repo_url, 'https://github.com/Psyker/FluidMap.git'
 set :ssh_user, 'root'
 
 # You can configure the Airbrussh format using :format_options.
