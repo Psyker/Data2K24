@@ -9,6 +9,15 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ApiController extends Controller
 {
+
+    /**
+     * @Rest\Get("/hello", name="test_route")
+     */
+    public function getHelloAction()
+    {
+        return new JsonResponse('test');
+    }
+
     /**
      * @Rest\Get("/users", name="app_get_users")
      */
@@ -28,4 +37,6 @@ class ApiController extends Controller
 
         return ['users' => $users];
     }
+
+
 }
