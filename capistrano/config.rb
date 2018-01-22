@@ -14,7 +14,7 @@ set :format_options, command_output: true, log_file: 'var/logs/capistrano.log', 
 set :log_level, :info
 
 # Composer
-set :composer_install_flags, '--no-dev --prefer-dist --no-interaction --optimize-autoloader --quiet'
+set :composer_install_flags, '--no-dev --prefer-dist --no-interaction --optimize-autoloader'
 
 # Default value for :linked_files is []
 set :linked_files, %w{app/config/parameters.yml}

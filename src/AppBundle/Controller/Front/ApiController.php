@@ -6,12 +6,13 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class ApiController extends Controller
 {
 
     /**
-     * @Rest\Get("/hello", name="test_route")
+     * @Route("/hello", name="test_route")
      */
     public function getHelloAction()
     {
