@@ -29,12 +29,11 @@ class AppImportDataCommand extends ContainerAwareCommand
     ];
 
     private $stationSchema = [
-        'departement' => 'setDepartement',
-        'code_postal' => 'setZipCode',
-        'coord' => 'setCoordinates',
-        'stop_id' => 'setStopId',
-        'stop_desc' => 'setDescription',
-        'stop_name' => 'setName'
+        'ligne' => 'setLineHint',
+        'geo_point_2d' => 'setCoordinates',
+        'reseau' => 'setNetwork',
+        'nomlong' => 'setName',
+        'exploitant' => 'setOperator'
     ];
 
     private $districtSchema = [
@@ -104,15 +103,21 @@ class AppImportDataCommand extends ContainerAwareCommand
         foreach ($response as $itemData) {
             $newEntity = $this->setDataByModel($model, $itemData['fields'], new $entity());
             if ($entity === Station::class) {
-                /** @var StationTrafic $stationTrafic */
-                if (!empty($stationTrafic = $this->em->getRepository(StationTrafic::class)->findOneBy([
-                    'stationName' => strtoupper($itemData['fields']['stop_name'])
-                ]))) {
-                    /** @var $entity Station */
-                    $newEntity->setTrafic($stationTrafic);
+                if ($newEntity->getOperator() == 'SNCF') {
+                    $newEntity = null;
+                } else {
+                    /** @var StationTrafic $stationTrafic */
+                    if (!empty($stationTrafic = $this->em->getRepository(StationTrafic::class)->findOneBy([
+                        'stationName' => strtoupper($itemData['fields']['nomlong'])
+                    ]))) {
+                        /** @var $entity Station */
+                        $newEntity->setTrafic($stationTrafic);
+                    }
                 }
             }
-            $this->em->persist($newEntity);
+            if (!is_null($newEntity)) {
+                $this->em->persist($newEntity);
+            }
             $index++;
             $progressBar->advance();
             if (($index % $chunkSize) == 0) {
@@ -139,6 +144,23 @@ class AppImportDataCommand extends ContainerAwareCommand
         $this->em->getConnection()->query('TRUNCATE TABLE district')->execute();
         $this->em->getConnection()->query('SET foreign_key_checks = 1;')->execute();
 
+//        dump($this->decode($this->client->get('https://opendata.stif.info/explore/dataset/emplacement-des-gares-idf/download/?format=json&timezone=Europe/Berlin'))[0]);exit;
+
+        $this->createEntities(
+            'https://dataratp2.opendatasoft.com/explore/dataset/trafic-annuel-entrant-par-station-du-reseau-ferre-2016/download/?format=json&timezone=Europe/Berlin',
+            StationTrafic::class,
+            $this->stationTraficSchema,
+            $output
+        );
+
+        // Create Stations from json export.
+        $this->createEntities(
+            'https://opendata.stif.info/explore/dataset/emplacement-des-gares-idf/download/?format=json&timezone=Europe/Berlin',
+            Station::class,
+            $this->stationSchema,
+            $output
+        );
+
         // Create Districts from json export.
         $this->createEntities(
             'https://public.opendatasoft.com/explore/dataset/iris-demographie/download/?format=json&timezone=Europe/Berlin',
@@ -152,21 +174,6 @@ class AppImportDataCommand extends ContainerAwareCommand
             'https://opendata.paris.fr/explore/dataset/commercesparis/download/?format=json&timezone=Europe/Berlin',
             LivingPlace::class,
             $this->livingPlaceSchema,
-            $output
-        );
-
-        $this->createEntities(
-            'https://dataratp2.opendatasoft.com/explore/dataset/trafic-annuel-entrant-par-station-du-reseau-ferre-2016/download/?format=json&timezone=Europe/Berlin',
-            StationTrafic::class,
-            $this->stationTraficSchema,
-            $output
-        );
-
-        // Create Stations from json export.
-        $this->createEntities(
-            'https://data.ratp.fr/explore/dataset/positions-geographiques-des-stations-du-reseau-ratp/download/?format=json&timezone=Europe/Berlin',
-            Station::class,
-            $this->stationSchema,
             $output
         );
     }

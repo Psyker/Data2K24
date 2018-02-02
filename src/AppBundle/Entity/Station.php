@@ -31,15 +31,15 @@ class Station
 
     /**
      * @var int
-     * @ORM\Column(type="integer", name="zip_code", nullable=true)
+     * @ORM\Column(type="string", name="lintHint", nullable=true)
      */
-    private $zipCode;
+    private $lineHint;
 
     /**
      * @var string
-     * @ORM\Column(type="string", nullable=false, name="description")
+     * @ORM\Column(type="string", nullable=false, name="network")
      */
-    private $description;
+    private $network;
 
     /**
      * @var array
@@ -49,15 +49,9 @@ class Station
 
     /**
      * @var int
-     * @ORM\Column(nullable=false, type="integer", name="departement")
+     * @ORM\Column(nullable=false, type="string", name="operator")
      */
-    private $departement;
-
-    /**
-     * @var int
-     * @ORM\Column(type="integer", name="stop_id", nullable=false)
-     */
-    private $stopId;
+    private $operator;
 
     /**
      * @return mixed
@@ -100,18 +94,18 @@ class Station
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getNetwork(): string
     {
-        return $this->description;
+        return $this->network;
     }
 
     /**
-     * @param string $description
+     * @param string $network
      * @return Station
      */
-    public function setDescription(string $description): Station
+    public function setNetwork(string $network): Station
     {
-        $this->description = $description;
+        $this->network = $network;
 
         return $this;
     }
@@ -138,56 +132,37 @@ class Station
     /**
      * @return int
      */
-    public function getDepartement(): int
+    public function getLineHint(): int
     {
-        return $this->departement;
+        return $this->lineHint;
     }
 
     /**
-     * @param int $departement
+     * @param string $lineHint
      * @return Station
      */
-    public function setDepartement(int $departement): Station
+    public function setLineHint(string $lineHint): Station
     {
-        $this->departement = $departement;
+        $this->lineHint = $lineHint;
 
         return $this;
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getStopId(): int
+    public function getOperator(): string
     {
-        return $this->stopId;
+        return $this->operator;
     }
 
     /**
-     * @param int $stopId
+     * @param string $operator
      * @return Station
      */
-    public function setStopId(int $stopId): Station
+    public function setOperator(string $operator): Station
     {
-        $this->stopId = $stopId;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getZipCode(): int
-    {
-        return $this->zipCode;
-    }
-
-    /**
-     * @param int $zipCode
-     * @return Station
-     */
-    public function setZipCode(int $zipCode): Station
-    {
-        $this->zipCode = $zipCode;
+        $this->operator = $operator;
 
         return $this;
     }
