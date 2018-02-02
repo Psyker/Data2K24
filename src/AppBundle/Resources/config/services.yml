@@ -1,11 +1,3 @@
 services:
-    api.manager.project:
-        class: AppBundle\Entity\Manager\ProjectManager
-        arguments:
-            - AppBundle\Entity\Project
-            - '@doctrine.orm.entity_manager'
-    api.manager.comment:
-        class: AppBundle\Entity\Manager\CommentManager
-        arguments:
-            - AppBundle\Entity\Comment
-            - '@doctrine.orm.entity_manager'
+    app.transport_service:
+        class: AppBundle\Services\TransportService
