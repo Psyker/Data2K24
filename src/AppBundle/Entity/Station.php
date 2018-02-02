@@ -23,11 +23,11 @@ class Station
     private $name;
 
     /**
-     * @var $trafic StationTrafic
+     * @var $stationTrafic StationTrafic
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\StationTrafic", inversedBy="station")
      * @ORM\JoinColumn(nullable=true)
      */
-    private $trafic;
+    private $stationTrafic;
 
     /**
      * @var int
@@ -52,6 +52,12 @@ class Station
      * @ORM\Column(nullable=false, type="string", name="operator")
      */
     private $operator;
+
+    /**
+     * @var array
+     * @ORM\Column(nullable=true, type="simple_array", name="frequency")
+     */
+    private $frequency;
 
     /**
      * @return mixed
@@ -170,20 +176,32 @@ class Station
     /**
      * @return StationTrafic
      */
-    public function getTrafic(): StationTrafic
+    public function getStationTrafic()
     {
-        return $this->trafic;
+        return $this->stationTrafic;
     }
 
     /**
-     * @param StationTrafic $trafic
+     * @param StationTrafic $stationTrafic
      * @return Station
      */
-    public function setTrafic(StationTrafic $trafic): Station
+    public function setStationTrafic(StationTrafic $stationTrafic): Station
     {
-        $this->trafic = $trafic;
+        $this->stationTrafic = $stationTrafic;
 
         return $this;
+    }
+
+    public function setFrequency(array $frequency)
+    {
+        $this->frequency = $frequency;
+
+        return $this;
+    }
+
+    public function getFrequency()
+    {
+        return $this->frequency;
     }
 
     public function set($function, $value)

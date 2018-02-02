@@ -1,3 +1,4 @@
 services:
     app.transport_service:
         class: AppBundle\Services\TransportService
+        arguments: ['@doctrine.orm.entity_manager']

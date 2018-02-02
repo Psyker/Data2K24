@@ -111,7 +111,7 @@ class AppImportDataCommand extends ContainerAwareCommand
                         'stationName' => strtoupper($itemData['fields']['nomlong'])
                     ]))) {
                         /** @var $entity Station */
-                        $newEntity->setTrafic($stationTrafic);
+                        $newEntity->setStationTrafic($stationTrafic);
                     }
                 }
             }
@@ -137,9 +137,6 @@ class AppImportDataCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-        dump($this->getContainer()->get('app.transport_service')->getFrequency());exit;
-
         $this->em->getConnection()->query('SET foreign_key_checks = 0;')->execute();
         $this->em->getConnection()->query('TRUNCATE TABLE living_place')->execute();
         $this->em->getConnection()->query('TRUNCATE TABLE station_trafic')->execute();
@@ -163,6 +160,8 @@ class AppImportDataCommand extends ContainerAwareCommand
             $this->stationSchema,
             $output
         );
+
+        dump($this->getContainer()->get('app.transport_service')->getFrequency());exit;
 
         // Create Districts from json export.
         $this->createEntities(
