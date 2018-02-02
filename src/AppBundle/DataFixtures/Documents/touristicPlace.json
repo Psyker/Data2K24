@@ -28,12 +28,13 @@
     "geo_point_2d": [48.88670459999999,2.34310430000005],
     "annualFrequency": 10000000,
     "placeId": 5
-  }, {
+  },
+  {
   "placeName": "Jardin des Tuileries",
   "geo_point_2d": [49.1090336,6.9457535000000235],
   "annualFrequency": 14000000,
   "placeId": 6
-},
+  },
   {
     "placeName": "Place de la Concorde",
     "geo_point_2d": [48.8656331,2.3212356999999884],
@@ -149,12 +150,6 @@
     "placeId": 26
   },
   {
-    "placeName": "Grand palais",
-    "geo_point_2d": [48.86610909999999,2.3124543999999787],
-    "annualFrequency": 1130000,
-    "placeId": 27
-  },
-  {
     "placeName": "Opera Garnier",
     "geo_point_2d": [48.8719697,2.331601399999954],
     "annualFrequency": 550000,
@@ -246,7 +241,7 @@
   },
   {
     "placeName": "Philharmonie de Paris",
-    "geo_point_2d": [48.48.889648,2.393983],
+    "geo_point_2d": [48.889648,2.393983],
     "annualFrequency": 1139000,
     "placeId": 43
   },

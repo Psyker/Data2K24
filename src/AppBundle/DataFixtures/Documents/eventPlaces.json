@@ -2,7 +2,7 @@
   {
     "placeName": "Stade Yves-du-Manoir",
     "capacity": 1,
-    "geo_point_2d": [48.9292771,2.24777169999993],
+    "geo_point_2d": "[48.9292771,2.24777169999993]",
     "epreuves": [
       {
         "name":"Hockey",
@@ -18,7 +18,7 @@
   {
     "placeName": "Esplanade des Invalides",
     "capacity": 1,
-    "geo_point_2d": [48.85990100000001,2.3142669999999725],
+    "geo_point_2d": "[48.85990100000001,2.3142669999999725]",
     "epreuves": [
       {
         "name":"Cyclisme",
@@ -30,7 +30,7 @@
   {
     "placeName": "Champs-Elysées",
     "capacity": 1,
-    "geo_point_2d": [48.8657844,2.307314099999985],
+    "geo_point_2d": "[48.8657844,2.307314099999985]",
     "epreuves": [
       {
         "name":"Cyclisme",
@@ -42,7 +42,7 @@
   {
     "placeName": "Tour Eiffel",
     "capacity": 1,
-    "geo_point_2d": [48.8582546,2.2925509000000375],
+    "geo_point_2d": "[48.8582546,2.2925509000000375]",
     "epreuves": [
       {
         "name":"Natation en eau libre",
@@ -58,7 +58,7 @@
   {
     "placeName": "Champ de Mars",
     "capacity": 1,
-    "geo_point_2d": [48.854872,2.2965639999999894],
+    "geo_point_2d": "[48.854872,2.2965639999999894]",
     "epreuves": [
       {
         "name":"Voleyball de plage",
@@ -70,7 +70,7 @@
   {
     "placeName": "Bercy Arena I et II",
     "capacity": 1,
-    "geo_point_2d": [48.83853789999999,2.3785841999999775],
+    "geo_point_2d": "[48.83853789999999,2.3785841999999775]",
     "epreuves": [
       {
         "name":"Judo",
@@ -86,7 +86,7 @@
   {
     "placeName": "Grand Palais",
     "capacity": 1,
-    "geo_point_2d": [48.865042,2.312889000000041],
+    "geo_point_2d": "[48.865042,2.312889000000041]",
     "epreuves": [
       {
         "name":"Taekwondo",
@@ -102,7 +102,7 @@
   {
     "placeName": "Grande Halle de la Villette",
     "capacity": 1,
-    "geo_point_2d": [48.89108349999999,2.3908500000000004],
+    "geo_point_2d": "[48.89108349999999,2.3908500000000004]",
     "epreuves": [
       {
         "name":"Halthérophilie",
@@ -114,7 +114,7 @@
   {
     "placeName": "Zénith Paris",
     "capacity": 1,
-    "geo_point_2d": [48.8938119,2.3931569999999738],
+    "geo_point_2d": "[48.8938119,2.3931569999999738]",
     "epreuves": [
       {
         "name":"Boxe",
@@ -126,7 +126,7 @@
   {
     "placeName": "Paris Expo - Halls I & IV",
     "capacity": 1,
-    "geo_point_2d": [48.83047149999999,2.286754100000053],
+    "geo_point_2d": "[48.83047149999999,2.286754100000053]",
     "epreuves": [
       {
         "name":"Handball",
@@ -142,7 +142,7 @@
   {
     "placeName": "Parc des Princes",
     "capacity": 1,
-    "geo_point_2d": [48.8414356,2.253048700000022],
+    "geo_point_2d": "[48.8414356,2.253048700000022]",
     "epreuves": [
       {
         "name":"Football",
@@ -154,7 +154,7 @@
   {
     "placeName": "Stade Jean-Bouin",
     "capacity": 1,
-    "geo_point_2d": [48.84332,2.252935999999977],
+    "geo_point_2d": "[48.84332,2.252935999999977]",
     "epreuves": [
       {
         "name":"Rugby",
@@ -166,7 +166,7 @@
   {
     "placeName": "Stade Pierre de Coubertin",
     "capacity": 1,
-    "geo_point_2d": [48.83507509999999,2.255697800000007],
+    "geo_point_2d": "[48.83507509999999,2.255697800000007]",
     "epreuves": [
       {
         "name":"Tennis de table",
@@ -178,7 +178,7 @@
   {
     "placeName": "Roland-Garros",
     "capacity": 1,
-    "geo_point_2d": [48.84791609999999,2.244306300000062],
+    "geo_point_2d": "[48.84791609999999,2.244306300000062]",
     "epreuves": [
       {
         "name":"Tennis",

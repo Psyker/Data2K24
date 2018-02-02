@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 
+use AppBundle\Entity\TouristicPlace;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -32,9 +33,18 @@ class LoadPlacesData extends AbstractFixture implements FixtureInterface, Contai
         $eventPlaces = file_get_contents($this->container->get('kernel')->getRootDir().'/../src/AppBundle/DataFixtures/Documents/eventPlaces.json', 'r');
         $touristicPlaces = file_get_contents($this->container->get('kernel')->getRootDir().'/../src/AppBundle/DataFixtures/Documents/touristicPlace.json', 'r');
 
+        $decodedTouristicPlaces = json_decode($touristicPlaces, true);
+        foreach ($decodedTouristicPlaces as $touristicPlace) {
+            dump($touristicPlace);
+            $newTouristicPlace = new TouristicPlace();
+            $newTouristicPlace->setGeoPoint2d($touristicPlace['geo_point_2d'])
+                ->setAnnualFrequency($touristicPlace['annualFrequency'])
+                ->setPlaceName($touristicPlace['placeName']);
+            $manager->persist($newTouristicPlace);
+        }
+        $manager->flush();
 
 
-        dump(json_decode($eventPlaces, true), json_decode($touristicPlaces, true));
     }
 
     /**
