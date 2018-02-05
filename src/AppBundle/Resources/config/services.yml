@@ -2,3 +2,14 @@ services:
     app.transport_service:
         class: AppBundle\Services\TransportService
         arguments: ['@doctrine.orm.entity_manager']
+
+    app.jwt_authenticator:
+        class: AppBundle\Security\JWTAuthenticator
+        arguments:
+            - "@router"
+            - "@doctrine.orm.entity_manager"
+            - "@app.jwt_manager"
+
+    app.jwt_manager:
+        class: AppBundle\Services\JWTManager
+        arguments: ["%jwt_private_key%"]

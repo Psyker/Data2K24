@@ -79,39 +79,6 @@ fos_user:
 
 fos_rest:
     param_fetcher_listener: true
-    body_listener: true
-    format_listener: true
-    view:
-        view_response_listener: 'force'
-        formats:
-            xml: true
-            json : true
-        templating_formats:
-            html: true
-        force_redirects:
-            html: true
-        failed_validation: HTTP_BAD_REQUEST
-        default_engine: twig
-    routing_loader:
-        default_format: json
-    exception:
-        messages:
-            Symfony\Component\HttpKernel\Exception\BadRequestHttpException: true
-
-
-jms_serializer:
-    metadata:
-        auto_detection: true
-        directories:
-            FOSUserBundle:
-                namespace_prefix: "FOS\\UserBundle"
-                path: "%kernel.root_dir%/config/serializer"
-
-lexik_jwt_authentication:
-    private_key_path: '%jwt_private_key_path%'
-    public_key_path: '%jwt_public_key_path%'
-    pass_phrase: '%jwt_key_pass_phrase%'
-    token_ttl: '%jwt_token_ttl%'
 
 nelmio_cors:
     defaults:
