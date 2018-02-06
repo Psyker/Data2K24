@@ -192,7 +192,7 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      * @param TokenInterface $token
      * @param string $providerKey The provider (i.e. firewall) key
      *
-     * @return Response|null
+     * @return Response|void
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {

@@ -161,8 +161,6 @@ class AppImportDataCommand extends ContainerAwareCommand
             $output
         );
 
-        dump($this->getContainer()->get('app.transport_service')->getFrequency());exit;
-
         // Create Districts from json export.
         $this->createEntities(
             'https://public.opendatasoft.com/explore/dataset/iris-demographie/download/?format=json&timezone=Europe/Berlin',

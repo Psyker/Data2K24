@@ -24,15 +24,10 @@ class LoadUsersData extends AbstractFixture implements FixtureInterface, Contain
      */
     private function getUsers()
     {
-        return [
+        return
             [
-                $this->getParam('mailer_user'),
                 $this->getParam('admin_username'),
-                $this->getParam('admin_password'),
-                ['ROLE_SUPER_ADMIN'],
-                true
-            ]
-        ];
+            ];
     }
 
     /**
@@ -44,12 +39,9 @@ class LoadUsersData extends AbstractFixture implements FixtureInterface, Contain
     {
         foreach ($this->getUsers() as $key => $user) {
             $user = (new User())
-                ->setEmail($user[0])
-                ->setUsername($user[1])
-                ->setPlainPassword($user[2])
-                ->setRoles($user[3])
-                ->setEnabled(true);
-            $this->addReference('user'.$key, $user);
+                ->setUsername($this->getUsers()[0])
+                ->setApiKey(strtoupper(substr(sha1(uniqid(mt_rand(), true)), 0, 16)))
+                ->setApiSecret(sha1(uniqid(mt_rand(), true)));
             $manager->persist($user);
         }
         $manager->flush();
