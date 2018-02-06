@@ -29,12 +29,6 @@ class EventPlace
     private $name;
 
     /**
-     * @var string
-     * @ORM\Column(name="adress", type="string", nullable=true)
-     */
-    private $adress;
-
-    /**
      * @var array
      * @ORM\Column(name="geo_point", type="simple_array", nullable=true)
      */
@@ -42,9 +36,15 @@ class EventPlace
 
     /**
      * @var Event
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Event", mappedBy="eventPlace")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Event", mappedBy="eventPlace", cascade={"persist"})
      */
     private $events;
+
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=false, name="capacity")
+     */
+    private $capacity;
 
     public function __construct()
     {
@@ -76,25 +76,6 @@ class EventPlace
     public function setName(string $name): EventPlace
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAdress(): string
-    {
-        return $this->adress;
-    }
-
-    /**
-     * @param string $adress
-     * @return EventPlace
-     */
-    public function setAdress(string $adress): EventPlace
-    {
-        $this->adress = $adress;
 
         return $this;
     }
@@ -140,6 +121,25 @@ class EventPlace
     public function addEvent(Event $event)
     {
         $this->events[] = $event;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCapacity(): int
+    {
+        return $this->capacity;
+    }
+
+    /**
+     * @param int $capacity
+     * @return EventPlace
+     */
+    public function setCapacity(int $capacity): EventPlace
+    {
+        $this->capacity = $capacity;
 
         return $this;
     }

@@ -28,10 +28,10 @@ class Event
     private $name;
 
     /**
-     * @var \DateTime
-     * @ORM\Column(name="date", type="datetime", nullable=true)
+     * @var array
+     * @ORM\Column(name="dates", type="simple_array", nullable=true)
      */
-    private $date;
+    private $dates;
 
 
     /**
@@ -70,20 +70,20 @@ class Event
     }
 
     /**
-     * @return \DateTime
+     * @return array
      */
-    public function getDate(): \DateTime
+    public function getDates(): array
     {
-        return $this->date;
+        return $this->dates;
     }
 
     /**
-     * @param \DateTime $date
+     * @param array
      * @return Event
      */
-    public function setDate(\DateTime $date): Event
+    public function setDates(array $date): Event
     {
-        $this->date = $date;
+        $this->dates = $date;
 
         return $this;
     }
