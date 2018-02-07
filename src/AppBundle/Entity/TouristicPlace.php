@@ -24,7 +24,7 @@ class TouristicPlace
     /**
      * @var string
      *
-     * @ORM\Column(name="place_name", type="string", unique=true)
+     * @ORM\Column(name="place_name", type="string")
      */
     private $placeName;
 
