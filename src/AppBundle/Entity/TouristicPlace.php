@@ -24,21 +24,21 @@ class TouristicPlace
     /**
      * @var string
      *
-     * @ORM\Column(name="placeName", type="string", unique=true)
+     * @ORM\Column(name="place_name", type="string", unique=true)
      */
     private $placeName;
 
     /**
      * @var array
      *
-     * @ORM\Column(name="geoPoint2d", type="simple_array")
+     * @ORM\Column(name="geo_point_2d", type="simple_array")
      */
     private $geoPoint2d;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="annualFrequency", type="integer")
+     * @ORM\Column(name="annual_frequency", type="integer")
      */
     private $annualFrequency;
 
