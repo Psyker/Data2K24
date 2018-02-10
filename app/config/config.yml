@@ -97,3 +97,13 @@ nelmio_cors:
             allow_methods: ['POST', 'GET']
             max_age: 3600
 
+nelmio_api_doc:
+    routes:
+        path_patterns: # an array of regexps
+            - ^/api/v1
+    documentation:
+        info:
+            title: Fluidmap API
+            description: ''
+            version: 1.0.0
+

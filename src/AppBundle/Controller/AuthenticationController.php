@@ -5,21 +5,46 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\User;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\FOSRestController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use SensioLabs\Security\Exception\HttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Swagger\Annotations as SWG;
 
 /**
  * Class UserController
  * @package AppBundle\Controller
- * @Route("/api")
  */
 class AuthenticationController extends FOSRestController
 {
 
     /**
      * @Rest\Post("/authenticate")
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the JWT needed to call every other endpoints.",
+     *     @SWG\Schema(
+     *         type="string"
+     *     )
+     * )
+     * @SWG\Response(
+     *     response=403,
+     *     description="Unauthorized access : Invalid apiKey or apiSecret"
+     * )
+     * @SWG\Parameter(
+     *     name="apiKey",
+     *     required=true,
+     *     in="formData",
+     *     type="string",
+     *     description="The user apiKey",
+     * )
+     * @SWG\Parameter(
+     *     name="apiSecret",
+     *     required=true,
+     *     in="formData",
+     *     type="string",
+     *     description="The user apiSecret",
+     * )
+     * @SWG\Tag(name="Authentication")
      * @param Request $request
      * @return JsonResponse
      */

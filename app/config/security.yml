@@ -15,7 +15,7 @@ security:
             security: false
 
         main:
-            pattern: ^/api/admin/
+            pattern: ^/api/v1/admin/
             stateless: true
             guard:
                 authenticators:
@@ -23,6 +23,7 @@ security:
                 entry_point: app.jwt_authenticator
 
     access_control:
-        - { path: ^/api/authenticate, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/api/, role: ROLE_USER }
-        - { path: ^/api/doc, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/authenticate, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/v1/prenium, role: ROLE_USER }
+        - { path: ^/api/v1/doc, role: IS_AUTHENTICATED_ANONYMOUSLY }

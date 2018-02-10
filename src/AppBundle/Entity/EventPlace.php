@@ -102,7 +102,7 @@ class EventPlace
     /**
      * @return Event
      */
-    public function getEvents(): Event
+    public function getEvents()
     {
         return $this->events;
     }
