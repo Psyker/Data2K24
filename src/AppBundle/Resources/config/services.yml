@@ -3,6 +3,10 @@ services:
         class: AppBundle\Services\TransportService
         arguments: ['@doctrine.orm.entity_manager']
 
+    app.compute_data_command:
+        class: AppBundle\Command\AppComputeDataCommand
+        arguments: ['@app.transport_service']
+
     app.jwt_authenticator:
         class: AppBundle\Security\JWTAuthenticator
         arguments:

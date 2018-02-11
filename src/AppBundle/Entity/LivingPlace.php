@@ -194,7 +194,7 @@ class LivingPlace
     /**
      * @return int
      */
-    public function getArea(): int
+    public function getArea()
     {
         return $this->area;
     }

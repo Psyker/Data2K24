@@ -35,7 +35,6 @@ class TransportService
             }
         }
         $this->em->flush();
-        exit;
     }
 
     private function getComputedTraffic(Station $station, int $timestamp)

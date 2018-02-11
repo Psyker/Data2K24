@@ -8,14 +8,10 @@ use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Swagger\Annotations as SWG;
 
-/**
- * Class ApiController
- * @package AppBundle\Controller
- */
-class ApiController extends FOSRestController
+class EventController extends FOSRestController
 {
     /**
-     * @Rest\Get("/places")
+     * @Rest\Get("/event/places")
      * @SWG\Response(
      *     response=200,
      *     description="Returns the event places with their trials.",
@@ -40,6 +36,8 @@ class ApiController extends FOSRestController
             $payload['features'][$key] = [
                 'type' => 'Feature',
                 'properties' => [
+                    'id' => $eventPlace->getId(),
+                    'type' => 'event_place',
                     'name' => $eventPlace->getName(),
                     'geo_point_2d' => $eventPlace->getGeoPoint(),
                     'capacity' => $eventPlace->getCapacity(),
@@ -52,6 +50,8 @@ class ApiController extends FOSRestController
             /** @var Event $event */
             foreach ($eventPlace->getEvents() as $event) {
                 $payload['features'][$key]['properties']['events'] = [
+                    'id' => $event->getId(),
+                    'type' => 'event',
                     'name' => $event->getName(),
                     'dates' => $event->getDates()
                 ];
@@ -62,7 +62,7 @@ class ApiController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/place/{id}")
+     * @Rest\Get("/event/place/{id}")
      * @SWG\Response(
      *     response=200,
      *     description="Returns the event place by id with their trials.",
@@ -73,8 +73,8 @@ class ApiController extends FOSRestController
      * @SWG\Parameter(
      *     name="id",
      *     required=true,
-     *     in="formData",
-     *     type="integer",
+     *     in="query",
+     *     type="number",
      *     description="The id of the event place",
      * )
      * @SWG\Tag(name="Data")
@@ -95,6 +95,8 @@ class ApiController extends FOSRestController
                 [
                     'type' => 'Feature',
                     'properties' => [
+                        'id' => $eventPlace->getId(),
+                        'type' => 'event_place',
                         'name' => $eventPlace->getName(),
                         'geo_point_2d' => $eventPlace->getGeoPoint(),
                         'capacity' => $eventPlace->getCapacity(),
@@ -109,11 +111,19 @@ class ApiController extends FOSRestController
         /** @var Event $event */
         foreach ($eventPlace->getEvents() as $event) {
             $payload['features'][0]['properties']['events'] = [
+                'id' => $event->getId(),
+                'type' => 'event',
                 'name' => $event->getName(),
                 'dates' => $event->getDates()
             ];
         }
 
         return new JsonResponse($payload);
+    }
+
+    public function getEventsByEventPlace()
+    {
+
+
     }
 }
