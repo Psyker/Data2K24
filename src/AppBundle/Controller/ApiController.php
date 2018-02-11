@@ -15,7 +15,7 @@ use Swagger\Annotations as SWG;
 class ApiController extends FOSRestController
 {
     /**
-     * @Rest\Get("/events/places")
+     * @Rest\Get("/places")
      * @SWG\Response(
      *     response=200,
      *     description="Returns the event places with their trials.",
@@ -28,21 +28,27 @@ class ApiController extends FOSRestController
     public function getEventPlaces()
     {
         $eventPlaces = $this->getDoctrine()->getRepository('AppBundle:EventPlace')->findAll();
-        $payload = [];
+        $payload = [
+            'type' => 'FeatureCollection',
+        ];
 
         if (empty($eventPlaces))  {
             return new JsonResponse('Event Places not found', 404);
         }
 
         foreach ($eventPlaces as $key => $eventPlace) {
-            $payload[$key] = [
+            $payload['features'][$key] = [
                 'name' => $eventPlace->getName(),
                 'geo_point_2d' => $eventPlace->getGeoPoint(),
                 'capacity' => $eventPlace->getCapacity(),
             ];
+            $payload['features'][$key]['geometry'] = [
+                'type' => 'Point',
+                'coordinates' => $eventPlace->getGeoPoint()
+            ];
             /** @var Event $event */
             foreach ($eventPlace->getEvents() as $event) {
-                $payload[$key]['events'] = [
+                $payload['features'][$key]['events'] = [
                     'name' => $event->getName(),
                     'dates' => $event->getDates()
                 ];
@@ -53,7 +59,7 @@ class ApiController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/events/place/{id}")
+     * @Rest\Get("/place/{id}")
      * @SWG\Response(
      *     response=200,
      *     description="Returns the event place by id with their trials.",
@@ -74,13 +80,22 @@ class ApiController extends FOSRestController
         }
 
         $payload = [
-            'name' => $eventPlace->getName(),
-            'geo_point_2d' => $eventPlace->getGeoPoint(),
-            'capacity' => $eventPlace->getCapacity(),
+            'type' => 'FeatureCollection',
+            'features' => [
+                [
+                    'name' => $eventPlace->getName(),
+                    'geo_point_2d' => $eventPlace->getGeoPoint(),
+                    'capacity' => $eventPlace->getCapacity(),
+                    'geometry' => [
+                        'type' => 'Point',
+                        'coordinates' => $eventPlace->getGeoPoint()
+                    ]
+                ]
+            ]
         ];
         /** @var Event $event */
         foreach ($eventPlace->getEvents() as $event) {
-            $payload['events'] = [
+            $payload['features'][0]['events'] = [
                 'name' => $event->getName(),
                 'dates' => $event->getDates()
             ];
