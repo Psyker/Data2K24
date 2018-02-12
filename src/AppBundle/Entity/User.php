@@ -4,25 +4,20 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="api_users")
  */
-class User implements UserInterface
+class User extends BaseUser implements UserInterface
 {
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="UUID")
      */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", nullable=false, unique=true)
-     * @var string
-     */
-    private $username;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", nullable=false, unique=true)
@@ -139,7 +134,7 @@ class User implements UserInterface
         return $this->username;
     }
 
-    public function setUsername(string $username)
+    public function setUsername($username)
     {
         $this->username = $username;
 

@@ -43,7 +43,7 @@ class EventController extends FOSRestController
                     'capacity' => $eventPlace->getCapacity(),
                 ],
             ];
-            $payload['features'][$key]['properties']['geometry'] = [
+            $payload['features'][$key]['geometry'] = [
                 'type' => 'Point',
                 'coordinates' => $eventPlace->getGeoPoint()
             ];
@@ -100,10 +100,10 @@ class EventController extends FOSRestController
                         'name' => $eventPlace->getName(),
                         'geo_point_2d' => $eventPlace->getGeoPoint(),
                         'capacity' => $eventPlace->getCapacity(),
-                        'geometry' => [
-                            'type' => 'Point',
-                            'coordinates' => $eventPlace->getGeoPoint()
-                        ]
+                    ],
+                    'geometry' => [
+                        'type' => 'Point',
+                        'coordinates' => $eventPlace->getGeoPoint()
                     ]
                 ]
             ]
