@@ -45,13 +45,13 @@ class LivingPlaceService
         $capacityIndex = null;
         
         switch ($area) {
-            case $area = 1 :
+            case 1 :
                 $capacityIndex = 0.02;
                 break;
-            case $area = 2 :
+            case 2 :
                 $capacityIndex = 0.08;
                 break;
-            case $area = 3:
+            case 3:
                 $capacityIndex = 0.8;
                 break;
             default:

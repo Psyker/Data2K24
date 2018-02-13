@@ -52,7 +52,7 @@ class EventController extends FOSRestController
             ];
             /** @var Event $event */
             foreach ($eventPlace->getEvents() as $event) {
-                $payload['features'][$key]['properties']['events'] = [
+                $payload['features'][$key]['properties']['events'][] = [
                     'id' => $event->getId(),
                     'type' => 'event',
                     'name' => $event->getName(),
@@ -113,7 +113,7 @@ class EventController extends FOSRestController
         ];
         /** @var Event $event */
         foreach ($eventPlace->getEvents() as $event) {
-            $payload['features'][0]['properties']['events'] = [
+            $payload['features'][0]['properties']['events'][] = [
                 'id' => $event->getId(),
                 'type' => 'event',
                 'name' => $event->getName(),

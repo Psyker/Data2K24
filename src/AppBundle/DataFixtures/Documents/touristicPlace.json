@@ -1,260 +1,265 @@
 [
-  {
-    "placeName": "Tour Effeil",
-    "geo_point_2d": [48.85589859999999,2.298087500000065],
-    "annualFrequency": 5934000,
-    "placeId": 1
-  },
-  {
-    "placeName": "Musée du Louvre",
-    "geo_point_2d": [48.8607317,2.3335058999999774],
-    "annualFrequency": 6989000,
-    "placeId": 2
-  },
-  {
-    "placeName": "Cathédrale Notre-Dame de Paris",
-    "geo_point_2d": [48.85296820000001,2.3499021000000084],
-    "annualFrequency": 12000000,
-    "placeId": 3
-  },
-  {
-    "placeName": "Arc de Triomphe",
-    "geo_point_2d": [48.8737793,2.2950155999999424],
-    "annualFrequency": 1342000,
-    "placeId": 4
-  },
-  {
-    "placeName": "Basilique du Sacré Coeur",
-    "geo_point_2d": [48.88670459999999,2.34310430000005],
-    "annualFrequency": 10000000,
-    "placeId": 5
-  },
-  {
-  "placeName": "Jardin des Tuileries",
-  "geo_point_2d": [49.1090336,6.9457535000000235],
-  "annualFrequency": 14000000,
-  "placeId": 6
-  },
-  {
-    "placeName": "Place de la Concorde",
-    "geo_point_2d": [48.8656331,2.3212356999999884],
-    "annualFrequency": 182500000,
-    "placeId": 7
-  },
-  {
-    "placeName": "Jardin du Luxembourg",
-    "geo_point_2d": [48.86400880000001,2.3372719999999845],
-    "annualFrequency": 21900000,
-    "placeId": 8
-  },
-  {
-    "placeName": "Centre Goerges Pompidou",
-    "geo_point_2d": [48.86064200000001,2.352245000000039],
-    "annualFrequency": 3335000,
-    "placeId": 9
-  },
-  {
-    "placeName": "Avenue des Champs-Elysées",
-    "geo_point_2d": [48.8657844,2.307314099999985],
-    "annualFrequency": 109500000,
-    "placeId": 10
-  },
-  {
-    "placeName": "Tour Montparnasse",
-    "geo_point_2d": [48.842129,2.321969899999999],
-    "annualFrequency": 726000,
-    "placeId": 11
-  },
-  {
-    "placeName": "Panthéon",
-    "geo_point_2d": [48.8462218,2.3464137999999366],
-    "annualFrequency": 598000,
-    "placeId": 12
-  },
-  {
-    "placeName": "Grand Palais",
-    "geo_point_2d": [48.86610909999999,2.3124543999999787],
-    "annualFrequency": 1130000,
-    "placeId": 13
-  },
-  {
-    "placeName": "Hotêl des invalides",
-    "geo_point_2d": [48.8551861,2.3125843999999915],
-    "annualFrequency": 1200000,
-    "placeId": 14
-  },
-  {
-    "placeName": "Musée de l'Orangerie",
-    "geo_point_2d": [48.86378839999999,2.3226723999999876],
-    "annualFrequency": 781000,
-    "placeId": 16
-  },
-  {
-    "placeName": "Trocadéro",
-    "geo_point_2d": [48.8619569,2.288707499999987],
-    "annualFrequency": 52000000,
-    "placeId": 17
-  },
-  {
-    "placeName": "Catacombes",
-    "geo_point_2d": [48.833832,2.332422],
-    "annualFrequency": 512000,
-    "placeId": 18
-  },
-  {
-    "placeName": "Musée Pablo Picasso",
-    "geo_point_2d": [48.8598775,2.362284999999929],
-    "annualFrequency": 669000,
-    "placeId": 19
-  },
-  {
-    "placeName": "Musée du Quai Branly",
-    "geo_point_2d": [48.8608889,2.297894000000042],
-    "annualFrequency": 1151000,
-    "placeId": 20
-  },
-  {
-    "placeName": "Musée de Cluny",
-    "geo_point_2d": [48.8504833,2.344080800000029],
-    "annualFrequency": 223000,
-    "placeId": 21
-  },
-  {
-    "placeName": "Halles de Paris",
-    "geo_point_2d": [48.8623348,2.3447356000000354],
-    "annualFrequency": 40000000,
-    "placeId": 22
-  },
-  {
-    "placeName": "Petit Palais",
-    "geo_point_2d": [48.8660479,2.3145895999999766],
-    "annualFrequency": 885000,
-    "placeId": 23
-  },
-  {
-    "placeName": "Musée d'Orsay",
-    "geo_point_2d": [48.86048650000001,2.3254093000000466],
-    "annualFrequency": 2997000,
-    "placeId": 24
-  },
-  {
-    "placeName": "Sainte Chapelle",
-    "geo_point_2d": [48.85542,2.3449869999999464],
-    "annualFrequency": 910000,
-    "placeId": 25
-  },
-  {
-    "placeName": "Conciergerie",
-    "geo_point_2d": [48.85601139999999,2.3454953000000387],
-    "annualFrequency": 355000,
-    "placeId": 26
-  },
-  {
-    "placeName": "Opera Garnier",
-    "geo_point_2d": [48.8719697,2.331601399999954],
-    "annualFrequency": 550000,
-    "placeId": 28
-  },
-  {
-    "placeName": "Jardin des Plantes",
-    "geo_point_2d": [48.8439621,2.359599600000024],
-    "annualFrequency": 1586000,
-    "placeId": 29
-  },
-  {
-    "placeName": "Palais de la découverte",
-    "geo_point_2d": [48.8662025,2.3108214999999745],
-    "annualFrequency": 559000,
-    "placeId": 30
-  },
-  {
-    "placeName": "Pont Alexandre III",
-    "geo_point_2d": [48.8638995,2.313558999999941],
-    "annualFrequency": 52000000,
-    "placeId": 31
-  },
-  {
-    "placeName": "Place de la Madeleine",
-    "geo_point_2d": [48.8704135,2.324255999999991],
-    "annualFrequency": 623000,
-    "placeId": 32
-  },
-  {
-    "placeName": "Pont Neuf",
-    "geo_point_2d": [48.85705,2.3413252000000284],
-    "annualFrequency": 30000000,
-    "placeId": 33
-  },
-  {
-    "placeName": "Palais de Tokyo",
-    "geo_point_2d": [48.88824049999999,2.339924900000028],
-    "annualFrequency": 714000,
-    "placeId": 34
-  },
-  {
-    "placeName": "Esplanade des Invalides",
-    "geo_point_2d": [48.8599152,2.313169300000027],
-    "annualFrequency": 1200000,
-    "placeId": 35
-  },
-  {
-    "placeName": "Pont des Arts",
-    "geo_point_2d": [48.85834240000001,2.3375083999999333],
-    "annualFrequency": 1000000,
-    "placeId": 36
-  },
-  {
-    "placeName": "Saint Germain des Prés",
-    "geo_point_2d": [48.8537981,2.3333284999999933],
-    "annualFrequency": 1000000,
-    "placeId": 37
-  },
-  {
-    "placeName": "Place des Abesses",
-    "geo_point_2d": [48.8845907,2.338602499999979],
-    "annualFrequency": 1000000,
-    "placeId": 38
-  },
-  {
-    "placeName": "Place de la Bastille",
-    "geo_point_2d": [48.8524383,2.3702035000000024],
-    "annualFrequency": 4500000,
-    "placeId": 39
-  },
-  {
-    "placeName": "Square du Vert Galant",
-    "geo_point_2d": [48.8574945,2.340084700000034],
-    "annualFrequency": 7887876,
-    "placeId": 40
-  },
-  {
-    "placeName": "Fontaine des Innocents",
-    "geo_point_2d": [48.8606405,2.3480262000000494],
-    "annualFrequency": 7887876,
-    "placeId": 41
-  },
-  {
-    "placeName": "Champs de Mars",
-    "geo_point_2d": [48.855648,2.29863],
-    "annualFrequency": 7000000,
-    "placeId": 42
-  },
-  {
-    "placeName": "Philharmonie de Paris",
-    "geo_point_2d": [48.889648,2.393983],
-    "annualFrequency": 1139000,
-    "placeId": 43
-  },
-  {
-    "placeName": "Fondation Louis Vuitton",
-    "geo_point_2d": [48.876614,2.263422],
-    "annualFrequency": 1021000,
-    "placeId": 44
-  },
-  {
-    "placeName": "Parc zoologique de Paris",
-    "geo_point_2d": [48.833354,2.414208],
-    "annualFrequency": 759000,
-    "placeId": 45
-  }
+    {
+        "placeName": "Tour Effeil",
+        "geo_point_2d": [48.85589859999999,2.298087500000065],
+        "annualFrequency": 5934000,
+        "placeId": 1
+    },
+    {
+        "placeName": "Musée du Louvre",
+        "geo_point_2d": [48.8607317,2.3335058999999774],
+        "annualFrequency": 6989000,
+        "placeId": 2
+    },
+    {
+        "placeName": "Cathédrale Notre-Dame de Paris",
+        "geo_point_2d": [48.85296820000001,2.3499021000000084],
+        "annualFrequency": 12000000,
+        "placeId": 3
+    },
+    {
+        "placeName": "Arc de Triomphe",
+        "geo_point_2d": [48.8737793,2.2950155999999424],
+        "annualFrequency": 1342000,
+        "placeId": 4
+    },
+    {
+        "placeName": "Basilique du Sacré Coeur",
+        "geo_point_2d": [48.88670459999999,2.34310430000005],
+        "annualFrequency": 10000000,
+        "placeId": 5
+    }, {
+        "placeName": "Jardin des Tuileries",
+        "geo_point_2d": [49.1090336,6.9457535000000235],
+        "annualFrequency": 14000000,
+        "placeId": 6
+    },
+    {
+        "placeName": "Place de la Concorde",
+        "geo_point_2d": [48.8656331,2.3212356999999884],
+        "annualFrequency": 182500000,
+        "placeId": 7
+    },
+    {
+        "placeName": "Jardin du Luxembourg",
+        "geo_point_2d": [48.86400880000001,2.3372719999999845],
+        "annualFrequency": 21900000,
+        "placeId": 8
+    },
+    {
+        "placeName": "Centre Goerges Pompidou",
+        "geo_point_2d": [48.86064200000001,2.352245000000039],
+        "annualFrequency": 3335000,
+        "placeId": 9
+    },
+    {
+        "placeName": "Avenue des Champs-Elysées",
+        "geo_point_2d": [48.8657844,2.307314099999985],
+        "annualFrequency": 109500000,
+        "placeId": 10
+    },
+    {
+        "placeName": "Tour Montparnasse",
+        "geo_point_2d": [48.842129,2.321969899999999],
+        "annualFrequency": 726000,
+        "placeId": 11
+    },
+    {
+        "placeName": "Panthéon",
+        "geo_point_2d": [48.8462218,2.3464137999999366],
+        "annualFrequency": 598000,
+        "placeId": 12
+    },
+    {
+        "placeName": "Grand Palais",
+        "geo_point_2d": [48.86610909999999,2.3124543999999787],
+        "annualFrequency": 1130000,
+        "placeId": 13
+    },
+    {
+        "placeName": "Hotêl des invalides",
+        "geo_point_2d": [48.8551861,2.3125843999999915],
+        "annualFrequency": 1200000,
+        "placeId": 14
+    },
+    {
+        "placeName": "Musée de l'Orangerie",
+        "geo_point_2d": [48.86378839999999,2.3226723999999876],
+        "annualFrequency": 781000,
+        "placeId": 16
+    },
+    {
+        "placeName": "Trocadéro",
+        "geo_point_2d": [48.8619569,2.288707499999987],
+        "annualFrequency": 52000000,
+        "placeId": 17
+    },
+    {
+        "placeName": "Catacombes",
+        "geo_point_2d": [48.833832,2.332422],
+        "annualFrequency": 512000,
+        "placeId": 18
+    },
+    {
+        "placeName": "Musée Pablo Picasso",
+        "geo_point_2d": [48.8598775,2.362284999999929],
+        "annualFrequency": 669000,
+        "placeId": 19
+    },
+    {
+        "placeName": "Musée du Quai Branly",
+        "geo_point_2d": [48.8608889,2.297894000000042],
+        "annualFrequency": 1151000,
+        "placeId": 20
+    },
+    {
+        "placeName": "Musée de Cluny",
+        "geo_point_2d": [48.8504833,2.344080800000029],
+        "annualFrequency": 223000,
+        "placeId": 21
+    },
+    {
+        "placeName": "Halles de Paris",
+        "geo_point_2d": [48.8623348,2.3447356000000354],
+        "annualFrequency": 40000000,
+        "placeId": 22
+    },
+    {
+        "placeName": "Petit Palais",
+        "geo_point_2d": [48.8660479,2.3145895999999766],
+        "annualFrequency": 885000,
+        "placeId": 23
+    },
+    {
+        "placeName": "Musée d'Orsay",
+        "geo_point_2d": [48.86048650000001,2.3254093000000466],
+        "annualFrequency": 2997000,
+        "placeId": 24
+    },
+    {
+        "placeName": "Sainte Chapelle",
+        "geo_point_2d": [48.85542,2.3449869999999464],
+        "annualFrequency": 910000,
+        "placeId": 25
+    },
+    {
+        "placeName": "Conciergerie",
+        "geo_point_2d": [48.85601139999999,2.3454953000000387],
+        "annualFrequency": 355000,
+        "placeId": 26
+    },
+    {
+        "placeName": "Grand palais",
+        "geo_point_2d": [48.86610909999999,2.3124543999999787],
+        "annualFrequency": 1130000,
+        "placeId": 27
+    },
+    {
+        "placeName": "Opera Garnier",
+        "geo_point_2d": [48.8719697,2.331601399999954],
+        "annualFrequency": 550000,
+        "placeId": 28
+    },
+    {
+        "placeName": "Jardin des Plantes",
+        "geo_point_2d": [48.8439621,2.359599600000024],
+        "annualFrequency": 1586000,
+        "placeId": 29
+    },
+    {
+        "placeName": "Palais de la découverte",
+        "geo_point_2d": [48.8662025,2.3108214999999745],
+        "annualFrequency": 559000,
+        "placeId": 30
+    },
+    {
+        "placeName": "Pont Alexandre III",
+        "geo_point_2d": [48.8638995,2.313558999999941],
+        "annualFrequency": 52000000,
+        "placeId": 31
+    },
+    {
+        "placeName": "Place de la Madeleine",
+        "geo_point_2d": [48.8704135,2.324255999999991],
+        "annualFrequency": 623000,
+        "placeId": 32
+    },
+    {
+        "placeName": "Pont Neuf",
+        "geo_point_2d": [48.85705,2.3413252000000284],
+        "annualFrequency": 30000000,
+        "placeId": 33
+    },
+    {
+        "placeName": "Palais de Tokyo",
+        "geo_point_2d": [48.88824049999999,2.339924900000028],
+        "annualFrequency": 714000,
+        "placeId": 34
+    },
+    {
+        "placeName": "Esplanade des Invalides",
+        "geo_point_2d": [48.8599152,2.313169300000027],
+        "annualFrequency": 1200000,
+        "placeId": 35
+    },
+    {
+        "placeName": "Pont des Arts",
+        "geo_point_2d": [48.85834240000001,2.3375083999999333],
+        "annualFrequency": 1000000,
+        "placeId": 36
+    },
+    {
+        "placeName": "Saint Germain des Prés",
+        "geo_point_2d": [48.8537981,2.3333284999999933],
+        "annualFrequency": 1000000,
+        "placeId": 37
+    },
+    {
+        "placeName": "Place des Abesses",
+        "geo_point_2d": [48.8845907,2.338602499999979],
+        "annualFrequency": 1000000,
+        "placeId": 38
+    },
+    {
+        "placeName": "Place de la Bastille",
+        "geo_point_2d": [48.8524383,2.3702035000000024],
+        "annualFrequency": 4500000,
+        "placeId": 39
+    },
+    {
+        "placeName": "Square du Vert Galant",
+        "geo_point_2d": [48.8574945,2.340084700000034],
+        "annualFrequency": 7887876,
+        "placeId": 40
+    },
+    {
+        "placeName": "Fontaine des Innocents",
+        "geo_point_2d": [48.8606405,2.3480262000000494],
+        "annualFrequency": 7887876,
+        "placeId": 41
+    },
+    {
+        "placeName": "Champs de Mars",
+        "geo_point_2d": [48.855648,2.29863],
+        "annualFrequency": 7000000,
+        "placeId": 42
+    },
+    {
+        "placeName": "Philharmonie de Paris",
+        "geo_point_2d": [48.889648,2.393983],
+        "annualFrequency": 1139000,
+        "placeId": 43
+    },
+    {
+        "placeName": "Fondation Louis Vuitton",
+        "geo_point_2d": [48.876614,2.263422],
+        "annualFrequency": 1021000,
+        "placeId": 44
+    },
+    {
+        "placeName": "Parc zoologique de Paris",
+        "geo_point_2d": [48.833354,2.414208],
+        "annualFrequency": 759000,
+        "placeId": 45
+    }
 ]

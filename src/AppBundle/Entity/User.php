@@ -4,13 +4,12 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
-use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="api_users")
  */
-class User extends BaseUser implements UserInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -18,6 +17,12 @@ class User extends BaseUser implements UserInterface
      * @ORM\GeneratedValue(strategy="UUID")
      */
     protected $id;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false, unique=true)
+     */
+    private $username;
 
     /**
      * @ORM\Column(type="string", nullable=false, unique=true)
