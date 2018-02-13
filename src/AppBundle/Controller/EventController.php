@@ -3,10 +3,13 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Event;
+use AppBundle\Entity\EventPlace;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Swagger\Annotations as SWG;
+use Symfony\Component\HttpFoundation\Request;
 
 class EventController extends FOSRestController
 {
@@ -19,7 +22,7 @@ class EventController extends FOSRestController
      *         type="string"
      *     )
      * )
-     * @SWG\Tag(name="Data")
+     * @SWG\Tag(name="Event Place")
      */
     public function getEventPlaces()
     {
@@ -45,7 +48,7 @@ class EventController extends FOSRestController
             ];
             $payload['features'][$key]['geometry'] = [
                 'type' => 'Point',
-                'coordinates' => $eventPlace->getGeoPoint()
+                'coordinates' => $eventPlace->getGeoPoint(),
             ];
             /** @var Event $event */
             foreach ($eventPlace->getEvents() as $event) {
@@ -53,7 +56,7 @@ class EventController extends FOSRestController
                     'id' => $event->getId(),
                     'type' => 'event',
                     'name' => $event->getName(),
-                    'dates' => $event->getDates()
+                    'dates' => $event->getDates(),
                 ];
             }
         }
@@ -77,7 +80,7 @@ class EventController extends FOSRestController
      *     type="number",
      *     description="The id of the event place",
      * )
-     * @SWG\Tag(name="Data")
+     * @SWG\Tag(name="Event Place")
      * @param int $id
      * @return JsonResponse
      */
@@ -103,10 +106,10 @@ class EventController extends FOSRestController
                     ],
                     'geometry' => [
                         'type' => 'Point',
-                        'coordinates' => $eventPlace->getGeoPoint()
-                    ]
-                ]
-            ]
+                        'coordinates' => $eventPlace->getGeoPoint(),
+                    ],
+                ],
+            ],
         ];
         /** @var Event $event */
         foreach ($eventPlace->getEvents() as $event) {
@@ -114,16 +117,116 @@ class EventController extends FOSRestController
                 'id' => $event->getId(),
                 'type' => 'event',
                 'name' => $event->getName(),
-                'dates' => $event->getDates()
+                'dates' => $event->getDates(),
             ];
         }
 
         return new JsonResponse($payload);
     }
 
-    public function getEventsByEventPlace()
+    /**
+     * @Rest\Get("/event/place/{id}/events")
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the events by event place or filtered by dates.",
+     *     @SWG\Schema(
+     *         type="string"
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="timestampStart",
+     *     required=false,
+     *     in="query",
+     *     type="number",
+     *     description="The beginning of the events",
+     * )
+     * @SWG\Parameter(
+     *     name="timestampEnd",
+     *     required=false,
+     *     in="query",
+     *     type="number",
+     *     description="The ending of the events",
+     * )
+     * @SWG\Tag(name="Event")
+     * @ParamConverter("eventPlace", class="AppBundle:EventPlace")
+     * @param Request $request
+     * @param EventPlace $eventPlace
+     * @return JsonResponse
+     */
+    public function getEventsByEventPlace(Request $request, EventPlace $eventPlace)
     {
+        $request->get('timestampStart') ? $dateStart = (new \DateTime())->setTimestamp($request->get('timestampStart', null)) : $dateStart =  null;
+        $request->get('timestampEnd') ? $dateEnd = (new \DateTime())->setTimestamp($request->get('timestampEnd', null)) : $dateEnd = null;
+
+        $events = $this->getDoctrine()->getRepository('AppBundle:Event')
+            ->getEventsByDates($eventPlace, $dateStart, $dateEnd);
+
+        $payload = [];
+        /** @var Event $event */
+        foreach ($events as $event) (
+            $payload[] = [
+                'id' => $event->getId(),
+                'name' => $event->getName(),
+                'timestampStart' => $event->getDates()[0],
+                'timestampEnd' => $event->getDates()[1],
+                'place_id' => $event->getEventPlace()->getId(),
+                'place_name' => $event->getEventPlace()->getName(),
+                'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
+            ]
+        );
+
+        return new JsonResponse($payload);
+    }
+
+    /**
+     * @Rest\Get("/event/all")
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns all the events or filtered by dates.",
+     *     @SWG\Schema(
+     *         type="string"
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="timestampStart",
+     *     required=false,
+     *     in="query",
+     *     type="number",
+     *     description="The beginning of the events",
+     * )
+     * @SWG\Parameter(
+     *     name="timestampEnd",
+     *     required=false,
+     *     in="query",
+     *     type="number",
+     *     description="The ending of the events",
+     * )
+     * @SWG\Tag(name="Event")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function getAllEvents(Request $request)
+    {
+        $request->get('timestampStart') ? $dateStart = (new \DateTime())->setTimestamp($request->get('timestampStart', null)) : $dateStart =  null;
+        $request->get('timestampEnd') ? $dateEnd = (new \DateTime())->setTimestamp($request->get('timestampEnd', null)) : $dateEnd = null;
+
+        $events = $this->getDoctrine()->getRepository('AppBundle:Event')->getAllEventsByDates($dateStart, $dateEnd);
+
+        $payload = [];
+        /** @var Event $event */
+        foreach ($events as $event) (
+            $payload[] = [
+                'id' => $event->getId(),
+                'name' => $event->getName(),
+                'timestampStart' => $event->getDates()[0],
+                'timestampEnd' => $event->getDates()[1],
+                'place_id' => $event->getEventPlace()->getId(),
+                'place_name' => $event->getEventPlace()->getName(),
+                'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
+            ]
+        );
 
 
+        return new JsonResponse($payload);
     }
 }
