@@ -54,6 +54,7 @@ class EventController extends FOSRestController
             foreach ($eventPlace->getEvents() as $event) {
                 $payload['features'][$key]['properties']['events'][] = [
                     'id' => $event->getId(),
+                    'place_id' => $event->getEventPlace()->getId(),
                     'type' => 'event',
                     'name' => $event->getName(),
                     'dates' => $event->getDates(),
@@ -115,6 +116,7 @@ class EventController extends FOSRestController
         foreach ($eventPlace->getEvents() as $event) {
             $payload['features'][0]['properties']['events'][] = [
                 'id' => $event->getId(),
+                'place_id' => $event->getEventPlace()->getId(),
                 'type' => 'event',
                 'name' => $event->getName(),
                 'dates' => $event->getDates(),
@@ -167,8 +169,8 @@ class EventController extends FOSRestController
             $payload[] = [
                 'id' => $event->getId(),
                 'name' => $event->getName(),
-                'timestampStart' => $event->getDates()[0],
-                'timestampEnd' => $event->getDates()[1],
+                'timestamp_start' => $event->getDates()[0],
+                'timestamp_end' => $event->getDates()[1],
                 'place_id' => $event->getEventPlace()->getId(),
                 'place_name' => $event->getEventPlace()->getName(),
                 'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
@@ -218,14 +220,13 @@ class EventController extends FOSRestController
             $payload[] = [
                 'id' => $event->getId(),
                 'name' => $event->getName(),
-                'timestampStart' => $event->getDates()[0],
-                'timestampEnd' => $event->getDates()[1],
+                'timestamp_start' => $event->getDates()[0],
+                'timestamp_end' => $event->getDates()[1],
                 'place_id' => $event->getEventPlace()->getId(),
                 'place_name' => $event->getEventPlace()->getName(),
                 'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
             ]
         );
-
 
         return new JsonResponse($payload);
     }

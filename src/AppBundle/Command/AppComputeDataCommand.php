@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Services\TouristicService;
 use AppBundle\Services\TransportService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,10 +13,13 @@ class AppComputeDataCommand extends ContainerAwareCommand
 
     private $transportService;
 
-    public function __construct(TransportService $transportService)
+    private $touristicService;
+
+    public function __construct(TransportService $transportService, TouristicService $touristicService)
     {
         parent::__construct();
         $this->transportService = $transportService;
+        $this->touristicService = $touristicService;
     }
 
     /**

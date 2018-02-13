@@ -9,7 +9,7 @@ services:
 
     app.compute_data_command:
         class: AppBundle\Command\AppComputeDataCommand
-        arguments: ['@app.transport_service']
+        arguments: ['@app.transport_service', '@app.touristic_service']
 
     app.jwt_authenticator:
         class: AppBundle\Security\JWTAuthenticator
