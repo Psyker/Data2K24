@@ -37,6 +37,9 @@ class AppComputeDataCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->touristicService->getFrequency();
+
+
         $output->writeln(['Computing frequency for each stations', '<info>Calculating...</info>']);
         $this->transportService->getFrequency();
         $output->writeln('Done.');

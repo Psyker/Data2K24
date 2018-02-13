@@ -31,8 +31,10 @@ class TouristicService
             /** @var \DateTime $date */
             foreach ($dateline as $date) {
                 $weight = $this->getWeight($date, $place);
-                $this->getHourlyFrequency($place->getAnnualFrequency(), $date->getTimestamp(), $weight);
+                $tmp = date('H', $date->getTimestamp());
+                $slots[] = intval($tmp) .'| ->'.  $this->getHourlyFrequency($place, $date->getTimestamp(), $weight);
             }
+            $place->setFrequency($slots);
         }
         $this->em->flush();
     }
@@ -42,8 +44,12 @@ class TouristicService
     {
         if ((date('D', $date->getTimestamp())) === 'Mon' && strpos($place->getPlaceName(), 'Musée') !== false) {
             $weightIndex = 0;
+        } elseif ((date('D', $date->getTimestamp())) === 'Sat' && strpos($place->getPlaceName(), 'Musée') !== false) {
+            $weightIndex = 1.50;
+        } elseif (strpos($place->getPlaceName(), 'Musée') !== false) {
+            $weightIndex = 1.35;
         } else {
-            $weightIndex = 1.36;
+            $weightIndex = 1;
         }
 
         return $weightIndex;
@@ -52,39 +58,58 @@ class TouristicService
     public function getHourlyFrequency(TouristicPlace $place, int $timestamp, int $weight)
     {
         $dailyFrequency = ($place->getAnnualFrequency() / 365) * $weight;
-        $timestampHour = date('H', $timestamp);
+        $timestampHour = intval(date('H', $timestamp));
 
-        switch ($timestampHour) {
-            case (2 > $timestampHour && $timestampHour < 4) :
-                $traficPart = 0;
-                break;
-            case (4 > $timestampHour && $timestampHour < 6) :
-                $traficPart = 1/24;
-                break;
-            case (6 > $timestampHour && $timestampHour < 8) :
-                $traficPart = 6/24;
-                break;
-            case (8 > $timestampHour && $timestampHour < 10) :
-                $traficPart = 3/24;
-                break;
-            case (10 > $timestampHour && $timestampHour < 12) :
-                $traficPart = 1/24;
-                break;
-            case (12 > $timestampHour && $timestampHour < 16) :
-                $traficPart = 2/24;
-                break;
-            case (16 > $timestampHour && $timestampHour < 18) :
-                $traficPart = 5/24;
-                break;
-            case (18 > $timestampHour && $timestampHour < 20) :
-                $traficPart = 3/24;
-                break;
-            case (20 > $timestampHour && $timestampHour < 0) :
-                $traficPart = 2/24;
-                break;
-            default:
-                $traficPart = 0;
-                break;
+        if (strpos($place->getPlaceName(), 'Musée') !== false) {
+            if (2 == $timestampHour || $timestampHour == 4 || 6 == $timestampHour || 8 == $timestampHour) {
+                $freqPart = 0;
+            }
+            if (10 == $timestampHour) {
+                $freqPart = 3 / 12;
+            }
+            if (12 == $timestampHour || $timestampHour == 14) {
+                $freqPart = 2 / 12;
+            }
+            if ($timestampHour == 16) {
+                $freqPart = 3 / 12;
+            }
+            if (18 == $timestampHour || $timestampHour == 20) {
+                $freqPart = 2 / 12;
+            }
+            if ($timestampHour == 22) {
+                $freqPart = 2 / 12;
+            }
+            if ($timestampHour == 0) {
+                $freqPart = 0;
+            }
+        } else {
+            if ($timestampHour == 0 || $timestampHour == 6) {
+                $freqPart = 0.75/24;
+            }
+            if ($timestampHour == 2 || $timestampHour == 4) {
+                $freqPart = 0.25/24;
+            }
+            if ($timestampHour == 8) {
+                $freqPart = 6/24;
+            }
+            if ($timestampHour == 10) {
+                $freqPart = 4/24;
+            }
+            if ($timestampHour == 12) {
+                $freqPart = 3/24;
+            }
+            if ($timestampHour == 14 || $timestampHour == 16 || $timestampHour == 18) {
+                $freqPart = 3/24;
+            }
+            if ($timestampHour == 20) {
+                $freqPart = 3/24;
+            }
+            if ($timestampHour == 22) {
+                $freqPart = 1/24;
+            }
         }
+        
+
+        return round($dailyFrequency * $freqPart);
     }
 }

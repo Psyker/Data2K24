@@ -55,6 +55,7 @@ class EventController extends FOSRestController
                 $payload['features'][$key]['properties']['events'][] = [
                     'id' => $event->getId(),
                     'place_id' => $event->getEventPlace()->getId(),
+                    'place_name' => $event->getEventPlace()->getName(),
                     'type' => 'event',
                     'name' => $event->getName(),
                     'dates' => $event->getDates(),
@@ -117,6 +118,7 @@ class EventController extends FOSRestController
             $payload['features'][0]['properties']['events'][] = [
                 'id' => $event->getId(),
                 'place_id' => $event->getEventPlace()->getId(),
+                'place_name' => $event->getEventPlace()->getName(),
                 'type' => 'event',
                 'name' => $event->getName(),
                 'dates' => $event->getDates(),
@@ -169,8 +171,7 @@ class EventController extends FOSRestController
             $payload[] = [
                 'id' => $event->getId(),
                 'name' => $event->getName(),
-                'timestamp_start' => $event->getDates()[0],
-                'timestamp_end' => $event->getDates()[1],
+                'dates' => $event->getDates(),
                 'place_id' => $event->getEventPlace()->getId(),
                 'place_name' => $event->getEventPlace()->getName(),
                 'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
@@ -220,8 +221,7 @@ class EventController extends FOSRestController
             $payload[] = [
                 'id' => $event->getId(),
                 'name' => $event->getName(),
-                'timestamp_start' => $event->getDates()[0],
-                'timestamp_end' => $event->getDates()[1],
+                'dates' => $event->getDates(),
                 'place_id' => $event->getEventPlace()->getId(),
                 'place_name' => $event->getEventPlace()->getName(),
                 'geo_point_2d' => $event->getEventPlace()->getGeoPoint()

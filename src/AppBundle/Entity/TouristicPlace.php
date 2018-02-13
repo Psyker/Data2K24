@@ -42,6 +42,11 @@ class TouristicPlace
      */
     private $annualFrequency;
 
+    /**
+     * @var array
+     * @ORM\Column(nullable=true, type="simple_array", name="frequency")
+     */
+    private $frequency;
 
     /**
      * Get id.
@@ -123,5 +128,24 @@ class TouristicPlace
     public function getAnnualFrequency()
     {
         return $this->annualFrequency;
+    }
+
+    /**
+     * @param array $frequency
+     * @return $this
+     */
+    public function setFrequency(array $frequency)
+    {
+        $this->frequency = $frequency;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFrequency()
+    {
+        return $this->frequency;
     }
 }

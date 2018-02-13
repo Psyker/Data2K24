@@ -30,9 +30,9 @@ class TransportService
             foreach ($dateline as $date) {
                 if (!empty($station->getStationTrafic())) {
                     $slots[] = $this->getComputedTraffic($station, $date->getTimestamp());
-                    $station->setFrequency($slots);
                 }
             }
+            $station->setFrequency($slots);
         }
         $this->em->flush();
     }
@@ -40,39 +40,34 @@ class TransportService
     private function getComputedTraffic(Station $station, int $timestamp)
     {
         $traficPerDay = ($station->getStationTrafic()->getTrafic() / 365);
-        $timestampHour = date('H', $timestamp);
+        $timestampHour = intval(date('H', $timestamp));
 
-        switch ($timestampHour) {
-            case (2 > $timestampHour && $timestampHour < 4) :
-                $traficPart = 0;
-                break;
-            case (4 > $timestampHour && $timestampHour < 6) :
-                $traficPart = 1/24;
-                break;
-            case (6 > $timestampHour && $timestampHour < 8) :
-                $traficPart = 6/24;
-                break;
-            case (8 > $timestampHour && $timestampHour < 10) :
-                $traficPart = 3/24;
-                break;
-            case (10 > $timestampHour && $timestampHour < 12) :
-                $traficPart = 1/24;
-                break;
-            case (12 > $timestampHour && $timestampHour < 16) :
-                $traficPart = 2/24;
-                break;
-            case (16 > $timestampHour && $timestampHour < 18) :
-                $traficPart = 5/24;
-                break;
-            case (18 > $timestampHour && $timestampHour < 20) :
-                $traficPart = 3/24;
-                break;
-            case (20 > $timestampHour && $timestampHour < 0) :
-                $traficPart = 2/24;
-                break;
-            default:
-                $traficPart = 0;
-                break;
+        if ($timestampHour == 0 || $timestampHour == 2 || $timestampHour == 4) {
+            $traficPart = 0;
+        }
+        if ($timestampHour == 6) {
+            $traficPart = 1/24;
+        }
+        if ($timestampHour == 8) {
+            $traficPart = 6/24;
+        }
+        if ($timestampHour == 10) {
+            $traficPart = 3/24;
+        }
+        if ($timestampHour == 12) {
+            $traficPart = 1/24;
+        }
+        if ($timestampHour == 14 || $timestampHour == 16) {
+            $traficPart = 2/24;
+        }
+        if ($timestampHour == 18) {
+            $traficPart = 5/24;
+        }
+        if ($timestampHour == 20) {
+            $traficPart = 3/24;
+        }
+        if ($timestampHour == 22) {
+            $traficPart = 2/24;
         }
 
         return round($traficPerDay * $traficPart);
