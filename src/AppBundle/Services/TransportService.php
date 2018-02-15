@@ -8,20 +8,34 @@ use Doctrine\ORM\EntityManager;
 class TransportService
 {
 
+    /**
+     * @var EntityManager $em
+     */
     private $em;
 
-    public function __construct(EntityManager $em)
+    /**
+     * @var TimeService $timeService
+     */
+    private $timeService;
+
+    /**
+     * TransportService constructor.
+     * @param EntityManager $em
+     * @param TimeService $timeService
+     */
+    public function __construct(EntityManager $em, TimeService $timeService)
     {
         $this->em = $em;
+        $this->timeService = $timeService;
     }
 
-    const START_DATE = 1722556801;
-    const TIME_SLOT = 2;
-
+    /**
+     * Return hourly frequency by station.
+     * @return void
+     */
     public function getFrequency()
     {
-        $interval = new \DateInterval('PT'.self::TIME_SLOT.'H');
-        $dateline = new \DatePeriod((new \DateTime())->setTimestamp(self::START_DATE), $interval, (new \DateTime())->setTimestamp(self::START_DATE)->modify('+16 day'));
+        $dateline = $this->timeService->getTimestamps();
         $stations = $this->em->getRepository(Station::class)->findAll();
         /** @var Station $station */
         foreach($stations as $station) {
@@ -37,40 +51,44 @@ class TransportService
         $this->em->flush();
     }
 
+    /**
+     * @param Station $station
+     * @param int $timestamp
+     * @return float
+     */
     private function getComputedTraffic(Station $station, int $timestamp)
     {
-        $traficPerDay = ($station->getStationTrafic()->getTrafic() / 365);
+        $trafficPerDay = ($station->getStationTrafic()->getTrafic() / 365);
         $timestampHour = intval(date('H', $timestamp));
 
         if ($timestampHour == 0 || $timestampHour == 2 || $timestampHour == 4) {
-            $traficPart = 0;
+            $trafficPart = 0;
         }
         if ($timestampHour == 6) {
-            $traficPart = 1/24;
+            $trafficPart = 1/24;
         }
         if ($timestampHour == 8) {
-            $traficPart = 6/24;
+            $trafficPart = 6/24;
         }
         if ($timestampHour == 10) {
-            $traficPart = 3/24;
+            $trafficPart = 3/24;
         }
         if ($timestampHour == 12) {
-            $traficPart = 1/24;
+            $trafficPart = 1/24;
         }
         if ($timestampHour == 14 || $timestampHour == 16) {
-            $traficPart = 2/24;
+            $trafficPart = 2/24;
         }
         if ($timestampHour == 18) {
-            $traficPart = 5/24;
+            $trafficPart = 5/24;
         }
         if ($timestampHour == 20) {
-            $traficPart = 3/24;
+            $trafficPart = 3/24;
         }
         if ($timestampHour == 22) {
-            $traficPart = 2/24;
+            $trafficPart = 2/24;
         }
 
-        return round($traficPerDay * $traficPart);
+        return round($trafficPerDay * $trafficPart);
     }
-
 }

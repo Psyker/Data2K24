@@ -9,21 +9,34 @@ use Doctrine\ORM\EntityManager;
 class TouristicService
 {
 
+    /**
+     * @var EntityManager $em
+     */
     private $em;
 
-    public function __construct(EntityManager $em)
+    /**
+     * @var TimeService $timeService
+     */
+    private $timeService;
+
+    /**
+     * TouristicService constructor.
+     * @param EntityManager $em
+     * @param TimeService $timeService
+     */
+    public function __construct(EntityManager $em, TimeService $timeService)
     {
         $this->em = $em;
+        $this->timeService = $timeService;
     }
 
-
-    const START_DATE = 1722556801;
-    const TIME_SLOT = 2;
-
+    /**
+     * Return hourly frequency by touristic place.
+     * @return void
+     */
     public function getFrequency()
     {
-        $interval = new \DateInterval('PT'.self::TIME_SLOT.'H');
-        $dateline = new \DatePeriod((new \DateTime())->setTimestamp(self::START_DATE), $interval, (new \DateTime())->setTimestamp(self::START_DATE)->modify('+16 day'));
+        $dateline = $this->timeService->getTimestamps();
         $touristicPlaces = $this->em->getRepository(TouristicPlace::class)->findAll();
         /** @var TouristicPlace $station */
         foreach($touristicPlaces as $place) {
@@ -39,7 +52,11 @@ class TouristicService
         $this->em->flush();
     }
 
-
+    /**
+     * @param \DateTime $date
+     * @param TouristicPlace $place
+     * @return float|int
+     */
     public function getWeight(\DateTime $date, TouristicPlace $place)
     {
         if ((date('D', $date->getTimestamp())) === 'Mon' && strpos($place->getPlaceName(), 'Musée') !== false) {
@@ -55,6 +72,12 @@ class TouristicService
         return $weightIndex;
     }
 
+    /**
+     * @param TouristicPlace $place
+     * @param int $timestamp
+     * @param int $weight
+     * @return float
+     */
     public function getHourlyFrequency(TouristicPlace $place, int $timestamp, int $weight)
     {
         $dailyFrequency = ($place->getAnnualFrequency() / 365) * $weight;
@@ -108,7 +131,6 @@ class TouristicService
                 $freqPart = 1/24;
             }
         }
-        
 
         return round($dailyFrequency * $freqPart);
     }

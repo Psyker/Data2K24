@@ -1,11 +1,14 @@
 services:
     app.transport_service:
         class: AppBundle\Services\TransportService
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager', '@app.time_service']
 
     app.touristic_service:
         class: AppBundle\Services\TouristicService
-        arguments: ['@doctrine.orm.entity_manager']
+        arguments: ['@doctrine.orm.entity_manager', '@app.time_service']
+
+    app.time_service:
+        class: AppBundle\Services\TimeService
 
     app.compute_data_command:
         class: AppBundle\Command\AppComputeDataCommand
