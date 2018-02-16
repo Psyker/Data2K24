@@ -78,7 +78,7 @@ class EventController extends FOSRestController
      * @SWG\Parameter(
      *     name="id",
      *     required=true,
-     *     in="query",
+     *     in="path",
      *     type="number",
      *     description="The id of the event place",
      * )
@@ -136,6 +136,13 @@ class EventController extends FOSRestController
      *     @SWG\Schema(
      *         type="string"
      *     )
+     * )
+     * @SWG\Parameter(
+     *     name="id",
+     *     required=true,
+     *     in="path",
+     *     type="number",
+     *     description="The id of the event place"
      * )
      * @SWG\Parameter(
      *     name="timestampStart",
