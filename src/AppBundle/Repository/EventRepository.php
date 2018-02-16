@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Event;
 use AppBundle\Entity\EventPlace;
 use Doctrine\ORM\EntityRepository;
 
@@ -19,11 +20,11 @@ class EventRepository extends EntityRepository
      * event place filtered by dates.
      *
      * @param EventPlace $eventPlace
-     * @param \DateTime|null $dateEnd
-     * @param \DateTime|null $dateStart
+     * @param int|null $dateEnd
+     * @param int|null $dateStart
      * @return array|mixed
      */
-    public function getEventsByDates(EventPlace $eventPlace, \DateTime $dateStart = null, \DateTime $dateEnd = null)
+    public function getEventsByDates(EventPlace $eventPlace, int $dateStart = null, int $dateEnd = null)
     {
         /** @var EventPlace $place */
         $events = $this->createQueryBuilder('e')
@@ -37,9 +38,9 @@ class EventRepository extends EntityRepository
         }
 
         $filteredEvents = [];
-        return  array_filter($events, function($event) use ($dateStart, $dateEnd, $filteredEvents) {
-            $eventStart = (new \DateTime())->setTimestamp($event->getDates()[0]);
-            $eventEnd = (new \DateTime())->setTimestamp($event->getDates()[1]);
+        return  array_filter($events, function(Event $event) use ($dateStart, $dateEnd, $filteredEvents) {
+            $eventStart = $event->getDates()[0];
+            $eventEnd = $event->getDates()[1];
             if ( $eventStart >= $dateStart && $eventEnd <= $dateEnd) {
                 $filteredEvents[] = $event;
             }
@@ -50,11 +51,11 @@ class EventRepository extends EntityRepository
     /**
      * Return all events or all events filtered dates.
      *
-     * @param \DateTime|null $dateEnd
-     * @param \DateTime|null $dateStart
+     * @param int|null $dateEnd
+     * @param int|null $dateStart
      * @return array|mixed
      */
-    public function getAllEventsByDates(\DateTime $dateStart = null, \DateTime $dateEnd = null)
+    public function getAllEventsByDates(int $dateStart = null, int $dateEnd = null)
     {
         $events = $this->createQueryBuilder('e')->getQuery()->getResult();
 
@@ -63,9 +64,9 @@ class EventRepository extends EntityRepository
         }
 
         $filteredEvents = [];
-        return  array_filter($events, function($event) use ($dateStart, $dateEnd, $filteredEvents) {
-            $eventStart = (new \DateTime())->setTimestamp($event->getDates()[0]);
-            $eventEnd = (new \DateTime())->setTimestamp($event->getDates()[1]);
+        return  array_filter($events, function(Event $event) use ($dateStart, $dateEnd, $filteredEvents) {
+            $eventStart = $event->getDates()[0];
+            $eventEnd = $event->getDates()[1];
             if ( $eventStart >= $dateStart && $eventEnd <= $dateEnd) {
                 $filteredEvents[] = $event;
             }

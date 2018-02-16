@@ -1,18 +1,5 @@
 [
   {
-    "placeName": "Stade Yves-du-Manoir",
-    "capacity": 18520,
-    "geo_point_2d": [48.9292771,2.24777169999993],
-    "events": [
-      {
-        "name":"Hockey ",
-        "filing" : 0.86,
-        "timeStamp":[]
-      }
-    ],
-    "placeId": 1
-  },
-  {
     "placeName": "Esplanade des Invalides",
     "capacity": 8000,
     "geo_point_2d": [48.85990100000001,2.3142669999999725],

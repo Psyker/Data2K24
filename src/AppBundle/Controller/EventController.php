@@ -84,13 +84,12 @@ class EventController extends FOSRestController
      *     description="The id of the event place",
      * )
      * @SWG\Tag(name="Event Place")
-     * @param int $id
+     * @ParamConverter("eventPlace", class="AppBundle:EventPlace")
+     * @param EventPlace $eventPlace
      * @return JsonResponse
      */
-    public function getEventPlaceBydId(int $id)
+    public function getEventPlaceBydId(EventPlace $eventPlace)
     {
-        $eventPlace = $this->getDoctrine()->getRepository('AppBundle:EventPlace')->find($id);
-
         if (empty($eventPlace)) {
             return new JsonResponse('Event Place not found', 404);
         }
@@ -168,8 +167,12 @@ class EventController extends FOSRestController
      */
     public function getEventsByEventPlace(Request $request, EventPlace $eventPlace)
     {
-        $request->get('timestampStart') ? $dateStart = (new \DateTime())->setTimestamp($request->get('timestampStart', null)) : $dateStart =  null;
-        $request->get('timestampEnd') ? $dateEnd = (new \DateTime())->setTimestamp($request->get('timestampEnd', null)) : $dateEnd = null;
+        if (empty($eventPlace)) {
+            return new JsonResponse('Event Place not found', 404);
+        }
+
+        $request->get('timestampStart') ? $dateStart = $request->get('timestampStart', null) : $dateStart =  null;
+        $request->get('timestampEnd') ? $dateEnd = $request->get('timestampEnd', null) : $dateEnd = null;
 
         $events = $this->getDoctrine()->getRepository('AppBundle:Event')
             ->getEventsByDates($eventPlace, $dateStart, $dateEnd);
@@ -220,8 +223,8 @@ class EventController extends FOSRestController
      */
     public function getAllEvents(Request $request)
     {
-        $request->get('timestampStart') ? $dateStart = (new \DateTime())->setTimestamp($request->get('timestampStart', null)) : $dateStart =  null;
-        $request->get('timestampEnd') ? $dateEnd = (new \DateTime())->setTimestamp($request->get('timestampEnd', null)) : $dateEnd = null;
+        $request->get('timestampStart') ? $dateStart = $request->get('timestampStart', null) : $dateStart =  null;
+        $request->get('timestampEnd') ? $dateEnd = $request->get('timestampEnd', null) : $dateEnd = null;
 
         $events = $this->getDoctrine()->getRepository('AppBundle:Event')->getAllEventsByDates($dateStart, $dateEnd);
 
