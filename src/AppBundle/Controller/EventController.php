@@ -237,4 +237,43 @@ class EventController extends FOSRestController
 
         return new JsonResponse($payload);
     }
+
+    /**
+     * @Rest\Get("/event/{id}")
+     * @SWG\Response(
+     *     response=200,
+     *     description="Returns the event by its id.",
+     *     @SWG\Schema(
+     *         type="string"
+     *     )
+     * )
+     * @SWG\Parameter(
+     *     name="id",
+     *     required=true,
+     *     in="path",
+     *     type="number",
+     *     description="The id of the event",
+     * )
+     * @SWG\Tag(name="Event")
+     * @ParamConverter("event", class="AppBundle:Event")
+     * @param Event $event
+     * @return JsonResponse
+     */
+    public function getEventById(Event $event)
+    {
+        if (empty($event)) {
+            return new JsonResponse('Event not found', 404);
+        }
+
+        $payload = [
+            'id' => $event->getId(),
+            'name' => $event->getName(),
+            'dates' => $event->getDates(),
+            'place_id' => $event->getEventPlace()->getId(),
+            'place_name' => $event->getEventPlace()->getName(),
+            'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
+        ];
+
+        return new JsonResponse($payload);
+    }
 }
