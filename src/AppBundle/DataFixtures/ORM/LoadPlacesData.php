@@ -35,6 +35,11 @@ class LoadPlacesData extends AbstractFixture implements FixtureInterface, Contai
         $eventPlaces = file_get_contents($this->container->get('kernel')->getRootDir().'/../src/AppBundle/DataFixtures/Documents/eventPlaces.json', 'r');
         $touristicPlaces = file_get_contents($this->container->get('kernel')->getRootDir().'/../src/AppBundle/DataFixtures/Documents/touristicPlace.json', 'r');
 
+        $this->container->get('doctrine')->getConnection()->query('SET foreign_key_checks = 0;')->execute();
+        $this->container->get('doctrine')->getConnection()->query('TRUNCATE TABLE event_place')->execute();
+        $this->container->get('doctrine')->getConnection()->query('TRUNCATE TABLE event')->execute();
+        $this->container->get('doctrine')->getConnection()->query('SET foreign_key_checks = 1;')->execute();
+
         $decodedTouristicPlaces = json_decode($touristicPlaces, true);
         foreach ($decodedTouristicPlaces as $touristicPlace) {
             $newTouristicPlace = new TouristicPlace();
@@ -46,19 +51,30 @@ class LoadPlacesData extends AbstractFixture implements FixtureInterface, Contai
         $manager->flush();
 
         $decodedEventPlaces = \GuzzleHttp\json_decode($eventPlaces, true);
+        /** @var array $eventPlace */
         foreach ($decodedEventPlaces as $eventPlace) {
+            /** @var EventPlace $newEventPlace */
             $newEventPlace = new EventPlace();
             $newEventPlace->setName($eventPlace['placeName'])
+                ->setCapacity($eventPlace['capacity'])
                 ->setGeoPoint($eventPlace['geo_point_2d'])
                 ->setCapacity($eventPlace['capacity']);
 
-            foreach ($eventPlace['epreuves'] as $trial) {
-                $newEvent = new Event();
-                $newEvent->setName($trial['name'])
-                    ->setDates($trial['timeStamp']);
-                $newEventPlace->addEvent($newEvent);
-                $newEvent->setEventPlace($newEventPlace);
-                $manager->persist($newEvent);
+            /** @var array $trial */
+            foreach ($eventPlace['events'] as $trial) {
+                /** @var int $timestamp */
+                foreach($trial['timeStamp'] as $timestamp) {
+                    $timestampStart = $timestamp;
+                    $timestampEnd = ((new \DateTime())->setTimestamp($timestamp))->modify('+2 hour');
+                    $newEvent = new Event();
+                    $newEvent->setName($trial['name'])
+                        ->setDates([$timestampStart, $timestampEnd->getTimestamp()])
+                        ->setFiling($trial['filing']);
+                    $newEventPlace->addEvent($newEvent);
+                    $newEvent->setEventPlace($newEventPlace);
+                    $manager->persist($newEvent);
+                }
+
             }
             $manager->persist($newEventPlace);
         }

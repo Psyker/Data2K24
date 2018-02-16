@@ -59,6 +59,7 @@ class EventController extends FOSRestController
                     'type' => 'event',
                     'name' => $event->getName(),
                     'dates' => $event->getDates(),
+                    'filing' => $event->getFiling()
                 ];
             }
         }
@@ -122,6 +123,7 @@ class EventController extends FOSRestController
                 'type' => 'event',
                 'name' => $event->getName(),
                 'dates' => $event->getDates(),
+                'filing' => $event->getFiling()
             ];
         }
 
@@ -179,6 +181,7 @@ class EventController extends FOSRestController
                 'id' => $event->getId(),
                 'name' => $event->getName(),
                 'dates' => $event->getDates(),
+                'filing' => $event->getFiling(),
                 'place_id' => $event->getEventPlace()->getId(),
                 'place_name' => $event->getEventPlace()->getName(),
                 'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
@@ -229,6 +232,7 @@ class EventController extends FOSRestController
                 'id' => $event->getId(),
                 'name' => $event->getName(),
                 'dates' => $event->getDates(),
+                'filing' => $event->getFiling(),
                 'place_id' => $event->getEventPlace()->getId(),
                 'place_name' => $event->getEventPlace()->getName(),
                 'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
@@ -269,6 +273,7 @@ class EventController extends FOSRestController
             'id' => $event->getId(),
             'name' => $event->getName(),
             'dates' => $event->getDates(),
+            'filing' => $event->getFiling(),
             'place_id' => $event->getEventPlace()->getId(),
             'place_name' => $event->getEventPlace()->getName(),
             'geo_point_2d' => $event->getEventPlace()->getGeoPoint()

@@ -23,16 +23,21 @@ class Event
 
     /**
      * @var string
-     * @ORM\Column(name="name", type="string", nullable=true)
+     * @ORM\Column(name="name", type="string", nullable=false)
      */
     private $name;
 
     /**
      * @var array
-     * @ORM\Column(name="dates", type="simple_array", nullable=true)
+     * @ORM\Column(name="dates", type="simple_array", nullable=false)
      */
     private $dates;
 
+    /**
+     * @var int
+     * @ORM\Column(type="float", name="filing", nullable=false)
+     */
+    private $filing;
 
     /**
      * @var EventPlace
@@ -103,6 +108,25 @@ class Event
     public function setEventPlace(EventPlace $eventPlace): Event
     {
         $this->eventPlace = $eventPlace;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getFiling(): float
+    {
+        return $this->filing;
+    }
+
+    /**
+     * @param float $filing
+     * @return Event
+     */
+    public function setFiling(float $filing): Event
+    {
+        $this->filing = $filing;
 
         return $this;
     }
