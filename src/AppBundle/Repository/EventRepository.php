@@ -40,8 +40,7 @@ class EventRepository extends EntityRepository
         $filteredEvents = [];
         return  array_filter($events, function(Event $event) use ($dateStart, $dateEnd, $filteredEvents) {
             $eventStart = $event->getDates()[0];
-            $eventEnd = $event->getDates()[1];
-            if ( $eventStart >= $dateStart && $eventEnd <= $dateEnd) {
+            if ($eventStart >= $dateStart && $eventStart <= $dateEnd) {
                 $filteredEvents[] = $event;
             }
             return $filteredEvents;
@@ -66,8 +65,7 @@ class EventRepository extends EntityRepository
         $filteredEvents = [];
         return  array_filter($events, function(Event $event) use ($dateStart, $dateEnd, $filteredEvents) {
             $eventStart = $event->getDates()[0];
-            $eventEnd = $event->getDates()[1];
-            if ( $eventStart >= $dateStart && $eventEnd <= $dateEnd) {
+            if ($eventStart >= $dateStart && $eventStart <= $dateEnd) {
                 $filteredEvents[] = $event;
             }
             return $filteredEvents;
