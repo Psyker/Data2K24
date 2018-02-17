@@ -95,7 +95,7 @@ class AppImportDataCommand extends ContainerAwareCommand
         ]);
         $response = $this->decode($this->client->get($apiUri));
         $output->write('<info>Downloaded.</info>', ['newline' => true]);
-        $chunkSize = 500;
+        $chunkSize = 1000;
         $index = 0;
         $progressBar = new ProgressBar($output, count($response));
         $output->write('<comment>Starting to generate entities.</comment>', ['newline' => true]);
@@ -121,7 +121,7 @@ class AppImportDataCommand extends ContainerAwareCommand
             $index++;
             $progressBar->advance();
             if (($index % $chunkSize) == 0) {
-                $progressBar->setMessage(PHP_EOL.'Flushing 500 entities.');
+                $progressBar->setMessage(PHP_EOL.'Flushing 1000 entities.');
                 $this->em->flush();
                 $this->em->clear();
                 $progressBar->setMessage('Keep going.');

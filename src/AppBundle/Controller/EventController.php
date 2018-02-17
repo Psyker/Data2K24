@@ -59,7 +59,9 @@ class EventController extends FOSRestController
                     'type' => 'event',
                     'name' => $event->getName(),
                     'dates' => $event->getDates(),
-                    'filing' => $event->getFiling()
+                    'filing' => $event->getFiling(),
+                    'step_name' => $event->getStepName(),
+                    'step_final' => $event->isStepFinal()
                 ];
             }
         }
@@ -83,16 +85,36 @@ class EventController extends FOSRestController
      *     type="number",
      *     description="The id of the event place",
      * )
+     * @SWG\Parameter(
+     *     name="timestampStart",
+     *     required=false,
+     *     in="query",
+     *     type="number",
+     *     description="The beginning of the events",
+     * )
+     * @SWG\Parameter(
+     *     name="timestampEnd",
+     *     required=false,
+     *     in="query",
+     *     type="number",
+     *     description="The ending of the events",
+     * )
      * @SWG\Tag(name="Event Place")
      * @ParamConverter("eventPlace", class="AppBundle:EventPlace")
+     * @param Request $request
      * @param EventPlace $eventPlace
      * @return JsonResponse
      */
-    public function getEventPlaceBydId(EventPlace $eventPlace)
+    public function getEventPlaceBydId(Request $request, EventPlace $eventPlace)
     {
         if (empty($eventPlace)) {
             return new JsonResponse('Event Place not found', 404);
         }
+
+        $request->get('timestampStart') ? $dateStart = $request->get('timestampStart', null) : $dateStart =  null;
+        $request->get('timestampEnd') ? $dateEnd = $request->get('timestampEnd', null) : $dateEnd = null;
+
+        $events = $this->getDoctrine()->getRepository('AppBundle:Event')->getEventsByDates($eventPlace, $dateStart, $dateEnd);
 
         $payload = [
             'type' => 'FeatureCollection',
@@ -114,7 +136,7 @@ class EventController extends FOSRestController
             ],
         ];
         /** @var Event $event */
-        foreach ($eventPlace->getEvents() as $event) {
+        foreach ($events as $event) {
             $payload['features'][0]['properties']['events'][] = [
                 'id' => $event->getId(),
                 'place_id' => $event->getEventPlace()->getId(),
@@ -122,7 +144,9 @@ class EventController extends FOSRestController
                 'type' => 'event',
                 'name' => $event->getName(),
                 'dates' => $event->getDates(),
-                'filing' => $event->getFiling()
+                'filing' => $event->getFiling(),
+                'step_name' => $event->getStepName(),
+                'step_final' => $event->isStepFinal()
             ];
         }
 
@@ -185,6 +209,8 @@ class EventController extends FOSRestController
                 'name' => $event->getName(),
                 'dates' => $event->getDates(),
                 'filing' => $event->getFiling(),
+                'step_name' => $event->getStepName(),
+                'step_final' => $event->isStepFinal(),
                 'place_id' => $event->getEventPlace()->getId(),
                 'place_name' => $event->getEventPlace()->getName(),
                 'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
@@ -236,6 +262,8 @@ class EventController extends FOSRestController
                 'name' => $event->getName(),
                 'dates' => $event->getDates(),
                 'filing' => $event->getFiling(),
+                'step_name' => $event->getStepName(),
+                'step_final' => $event->isStepFinal(),
                 'place_id' => $event->getEventPlace()->getId(),
                 'place_name' => $event->getEventPlace()->getName(),
                 'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
@@ -277,6 +305,8 @@ class EventController extends FOSRestController
             'name' => $event->getName(),
             'dates' => $event->getDates(),
             'filing' => $event->getFiling(),
+            'step_name' => $event->getStepName(),
+            'step_final' => $event->isStepFinal(),
             'place_id' => $event->getEventPlace()->getId(),
             'place_name' => $event->getEventPlace()->getName(),
             'geo_point_2d' => $event->getEventPlace()->getGeoPoint()

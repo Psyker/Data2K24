@@ -44,8 +44,7 @@ class TouristicService
             /** @var \DateTime $date */
             foreach ($dateline as $date) {
                 $weight = $this->getWeight($date, $place);
-                $tmp = date('H', $date->getTimestamp());
-                $slots[] = intval($tmp) .'| ->'.  $this->getHourlyFrequency($place, $date->getTimestamp(), $weight);
+                $slots[] = $this->getHourlyFrequency($place, $date->getTimestamp(), $weight);
             }
             $place->setFrequency($slots);
         }

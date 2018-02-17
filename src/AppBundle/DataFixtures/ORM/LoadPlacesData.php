@@ -69,7 +69,9 @@ class LoadPlacesData extends AbstractFixture implements FixtureInterface, Contai
                     $newEvent = new Event();
                     $newEvent->setName($trial['name'])
                         ->setDates([$timestampStart, $timestampEnd->getTimestamp()])
-                        ->setFiling($trial['filing']);
+                        ->setFiling($trial['filing'])
+                        ->setStepName($trial['stepName'])
+                        ->setStepFinal($trial['stepFinal']);
                     $newEventPlace->addEvent($newEvent);
                     $newEvent->setEventPlace($newEventPlace);
                     $manager->persist($newEvent);
@@ -79,16 +81,5 @@ class LoadPlacesData extends AbstractFixture implements FixtureInterface, Contai
             $manager->persist($newEventPlace);
         }
         $manager->flush();
-
-
-    }
-
-    /**
-     * @param string $name
-     * @return mixed
-     */
-    private function getParam(string $name)
-    {
-        return $this->container->getParameter($name);
     }
 }

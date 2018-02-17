@@ -46,6 +46,18 @@ class Event
     private $eventPlace;
 
     /**
+     * @ORM\Column(type="string", name="step_name", nullable=false)
+     * @var string
+     */
+    private $stepName;
+
+    /**
+     * @ORM\Column(type="boolean", name="step_final", nullable=false)
+     * @var bool
+     */
+    private $stepFinal;
+
+    /**
      * Get id.
      *
      * @return int
@@ -127,6 +139,44 @@ class Event
     public function setFiling(float $filing): Event
     {
         $this->filing = $filing;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStepName(): string
+    {
+        return $this->stepName;
+    }
+
+    /**
+     * @param string $stepName
+     * @return Event
+     */
+    public function setStepName(string $stepName): Event
+    {
+        $this->stepName = $stepName;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStepFinal(): bool
+    {
+        return $this->stepFinal;
+    }
+
+    /**
+     * @param bool $stepFinal
+     * @return Event
+     */
+    public function setStepFinal(bool $stepFinal): Event
+    {
+        $this->stepFinal = $stepFinal;
 
         return $this;
     }

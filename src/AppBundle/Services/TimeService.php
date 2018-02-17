@@ -18,4 +18,21 @@ class TimeService
 
         return $dateline;
     }
+
+    /**
+     * @param int $timestampStart
+     * @return int|string
+     */
+    public function getFrequencyByDates(int $timestampStart)
+    {
+        $dateline = $this->getTimestamps();
+        /** @var \DateTime $date */
+        foreach ($dateline as $key => $date) {
+            if ($date->getTimestamp() === $timestampStart) {
+                return $key;
+            }
+        }
+
+        return null;
+    }
 }
