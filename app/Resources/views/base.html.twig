@@ -1,61 +1,33 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    <meta charset="UTF-8"/>
-    <title>{% block title %}API Back-Office | Dashboard{% endblock %}</title>
-    {% block stylesheets %}{% endblock %}
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
-    <link rel="stylesheet" href="{{ asset('build/global.css') }}">
+    <title>Fluidmap API</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <script src="{{ asset('assets/js/ie/html5shiv.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/ie9.css') }}" />
 </head>
 <body>
-<div class="container">
-    <div class="columns">
-        <div class="column col-2 bg-gray full-height">
-            <header>
-                <div class="panel">
-                    <div class="panel-header centered">
-                        <div class="panel-title mt-5"></div>
-                    </div>
-                </div>
-                <nav class="nav-padding">
-                    <ul class="nav">
-                        <li class="nav-item">
-                            <a href="#">Elements</a>
-                        </li>
-                        <li class="nav-item active">
-                            <a href="#">Layout</a>
-                            <ul class="nav">
-                                <li class="nav-item">
-                                    <a href="#">Flexbox grid</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#">Responsive</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#">Navbar</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#">Empty states</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#">Components</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#">Utilities</a>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
-        </div>
-        <div class="container container-marging">
-            {% block body %}{% endblock %}
-        </div>
-    </div>
-</div>
-{% block javascripts %}
-{% endblock %}
-<script src="{{ asset('build/app.js') }}"></script>
+
+<!-- Header -->
+<header id="header">
+    <h1><img src="{{ asset('images/logo.png') }}" alt="Fluimap" width="220px"></h1>
+    <p>Récoltez des données démographiques pour vos services <br />
+        consultez la <a href="http://api.fluidmap.fr/api/doc">documentation</a> de l'API pour commencer.</p>
+</header>
+
+<!-- Footer -->
+<footer id="footer">
+    <ul class="copyright">
+        <li>&copy; Fluidmap.</li>
+        <li>2018</li>
+    </ul>
+</footer>
+
+<!-- Scripts -->
+<script src="{{ asset('assets/js/ie/respond.min.js') }}"></script>
+<script src="{{ asset('assets/js/main.js') }}"></script>
+
 </body>
 </html>
