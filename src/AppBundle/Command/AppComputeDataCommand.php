@@ -41,17 +41,16 @@ class AppComputeDataCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-
-        $this->livingPlaceService->getFrequency();
-
-        exit;
-
         $output->writeln(['Computing frequency for each touristic place', '<info>Calculating...</info>']);
         $this->touristicService->getFrequency();
         $output->writeln('Done.');
 
         $output->writeln(['Computing frequency for each stations', '<info>Calculating...</info>']);
         $this->transportService->getFrequency();
+        $output->writeln('Done.');
+
+        $output->writeln(['Computing frequency for each living place', '<info>Calculating...</info>']);
+        $this->livingPlaceService->getFrequency();
         $output->writeln('Done.');
     }
 }

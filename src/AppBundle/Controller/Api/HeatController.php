@@ -27,9 +27,11 @@ class HeatController extends FOSRestController
      */
     public function getHeatMap(int $timestampStart = null)
     {
+
         if (empty($timestampStart)) {
             return new JsonResponse('timestampStart is required', 403);
         }
+        @ini_set('memory_limit', -1);
 
         $dateline = $this->get('app.time_service')->getTimestamps();
         $frequencyIndex = $this->get('app.time_service')->getFrequencyByDates($timestampStart, $dateline);
@@ -40,6 +42,8 @@ class HeatController extends FOSRestController
         ];
         $touristicPlaces = $em->getRepository('AppBundle:TouristicPlace')->findAll();
         $stations = $em->getRepository('AppBundle:Station')->findAll();
+        $eventPlaces = $em->getRepository('AppBundle:EventPlace')->findAll();
+        $livingPlaces = $em->getRepository('AppBundle:LivingPlace')->getFrequencyAndCoordinates();
 
         foreach ($touristicPlaces as $touristicPlace) {
             $payload['features'][] = [
@@ -64,6 +68,31 @@ class HeatController extends FOSRestController
                     ]
                 ];
             }
+        }
+        foreach ($eventPlaces as $eventPlace) {
+            $eventCount = count($em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace, $timestampStart, $timestampStart + 7600));
+            if ($eventCount !== 0) {
+                $payload['features'][] = [
+                    'properties' => [
+                        'hint' => ($em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace, $timestampStart, $timestampStart + 7600)[0])->getFiling() * $eventPlace->getCapacity()
+                    ],
+                    'geometry' => [
+                        'type' => 'Point',
+                        'coordinates' => $eventPlace->getGeoPoint()
+                    ]
+                ];
+            }
+        }
+        foreach ($livingPlaces as $livingPlace) {
+            $payload['features'][] = [
+                'properties' => [
+                    'hint' => $livingPlace['frequency'][$frequencyIndex]
+                ],
+                'geometry' => [
+                    'type' => 'Point',
+                    'coordinates' => $livingPlace['coordinates']
+                ]
+            ];
         }
 
         return new JsonResponse($payload);

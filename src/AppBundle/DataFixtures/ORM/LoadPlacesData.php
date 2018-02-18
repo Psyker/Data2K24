@@ -56,7 +56,6 @@ class LoadPlacesData extends AbstractFixture implements FixtureInterface, Contai
             /** @var EventPlace $newEventPlace */
             $newEventPlace = new EventPlace();
             $newEventPlace->setName($eventPlace['placeName'])
-                ->setCapacity($eventPlace['capacity'])
                 ->setGeoPoint($eventPlace['geo_point_2d'])
                 ->setCapacity($eventPlace['capacity']);
 

@@ -21,10 +21,10 @@ class AppImportDataCommand extends ContainerAwareCommand
     private $livingPlaceSchema = [
         'codact' => "setActivityCode",
         'xy' => 'setCoordinates',
-        'arro' => 'setArr',
-        'adresse_complete' => 'setAddress',
+        'qua' => 'setDistrict',
         'libact' => 'setActivityLabel',
-        'type_voie' => 'setSituation',
+        'type_voie' => 'setWayType',
+        'situation' => 'setSituation',
         'surface' => 'setArea'
     ];
 

@@ -58,6 +58,15 @@ class TimeService
             'CA103',
         ]
     ];
+    const DISTRICT_PARTY_PATTERN = [
+        1, 1,1, 1,1, 1, 1, 1, 1, 1, 1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,
+    ];
+    const DISTRICT_HOME_PATTERN = [
+        1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,
+    ];
+    const DISTRICT_TOURISTIC_PATTERN = [
+        1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,1, 1,1, 1,1, 1, 1, 1, 1, 1,
+    ];
 
     /**
      * Returns an array of 2-hour periods on 16 days
@@ -91,13 +100,11 @@ class TimeService
     }
 
 
-
-
     public function getAttractivenessByHour(int $timestamp, string $activityCode)
     {
         $hour = intval(date('H', $timestamp));
         $activityCode = substr($activityCode, 0, 5);
-        $attractivenessIndex = 0;
+        $attractivenessIndex = 0.05;
 
         /** Bed time */
         if ($hour == 0 || $hour == 2 || $hour == 4 || $hour == 22 || $hour == 6) {
@@ -151,5 +158,25 @@ class TimeService
         }
 
         return $attractivenessIndex;
+    }
+
+    public function getDistrictPonderationByHour(int $timestamp, int $district)
+    {
+        $hour = intval(date('H', $timestamp));
+        $result = 0;
+
+        if ($hour == 0 || $hour == 2 || $hour == 4 || $hour == 6) {
+            $result = self::DISTRICT_HOME_PATTERN[$district - 1];
+        }
+
+        if ($hour == 10 || $hour == 12 || $hour == 14 || $hour == 16 ) {
+            $result = self::DISTRICT_TOURISTIC_PATTERN[$district - 1];
+        }
+
+        if ($hour == 20 || $hour == 18 || $hour == 22) {
+            $result = self::DISTRICT_PARTY_PATTERN[$district - 1];
+        }
+
+        return $result;
     }
 }

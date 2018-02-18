@@ -14,8 +14,17 @@ class LivingPlaceRepository extends \Doctrine\ORM\EntityRepository
     public function getInfos()
     {
        return $this->createQueryBuilder('l')
-            ->select('l.coordinates', 'l.activityCode', 'l.area', 'l.id')
+            ->select('l.coordinates', 'l.activityCode', 'l.area', 'l.id', 'l.district', 'l.wayType', 'l.situation')
            ->getQuery()
            ->getResult();
+    }
+
+    public function getFrequencyAndCoordinates()
+    {
+        return $this->createQueryBuilder('l')
+            ->select('l.coordinates', 'l.frequency')
+            ->where('l.frequency IS NOT NULL')
+            ->getQuery()
+            ->getResult();
     }
 }

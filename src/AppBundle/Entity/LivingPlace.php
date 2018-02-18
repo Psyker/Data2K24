@@ -18,21 +18,21 @@ class LivingPlace
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=true, name="arr")
+     * @ORM\Column(type="integer", nullable=true, name="district")
      */
-    private $arr;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", name="address", nullable=true)
-     */
-    private $address;
+    private $district;
 
     /**
      * @var array
      * @ORM\Column(type="simple_array", name="coordinates", nullable=true)
      */
     private $coordinates;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", name="way_type", nullable=true)
+     */
+    private $wayType;
 
     /**
      * @var string
@@ -86,37 +86,18 @@ class LivingPlace
     /**
      * @return int
      */
-    public function getArr(): int
+    public function getDistrict(): int
     {
-        return $this->arr;
+        return $this->district;
     }
 
     /**
-     * @param int $arr
+     * @param int $district
      * @return LivingPlace
      */
-    public function setArr(int $arr): LivingPlace
+    public function setDistrict(int $district): LivingPlace
     {
-        $this->arr = $arr;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAddress(): string
-    {
-        return $this->address;
-    }
-
-    /**
-     * @param string $address
-     * @return LivingPlace
-     */
-    public function setAddress(string $address): LivingPlace
-    {
-        $this->address = $address;
+        $this->district = $district;
 
         return $this;
     }
@@ -237,5 +218,24 @@ class LivingPlace
     public function setFrequency(array $frequency)
     {
         $this->frequency = $frequency;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWayType()
+    {
+        return $this->wayType;
+    }
+
+    /**
+     * @param string $wayType
+     * @return LivingPlace
+     */
+    public function setWayType($wayType): LivingPlace
+    {
+        $this->wayType = $wayType;
+
+        return $this;
     }
 }
