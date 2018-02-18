@@ -1,33 +1,99 @@
 <!DOCTYPE HTML>
+<!--
+	Eventually by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
 <html>
 <head>
     <title>Fluidmap API</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-    <script src="{{ asset('assets/js/ie/html5shiv.js') }}"></script>
-    <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/ie9.css') }}" />
 </head>
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Poppins');
+    body{
+        font-family: "Poppins";
+        background-color: #fafafc;
+        font-size: 15px;
+        padding: 5%;
+
+    }
+    .btn-primary {
+        color:#fff;
+        float: left;
+        text-decoration: none;
+        margin-top: 1rem;
+        line-height:40px;
+        text-align: center;
+        display: block;
+        margin-left: .5rem;
+        width: 180px;
+        height: 40px;
+        border-radius: 3px;
+        background-color: #2c5bfc;
+        box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.1);
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+    .btn-light {
+        text-transform: uppercase;
+        color:#2c5bfc;
+        text-decoration: none;
+        line-height:40px;
+        display: inline-block;
+        float: left;
+        margin-top: 1rem;
+        text-align: center;
+        display: block;
+        width: 180px;
+        height: 40px;
+        border-radius: 3px;
+        border: solid 1px #2c5bfc;
+        font-size: 12px;
+        box-shadow: 0 3px 12px 0 rgba(0, 0, 0, 0.1);
+    }
+    p{
+        line-height: 120%;
+    }
+
+    header{
+        margin-top: 20vh;
+    }
+    .map{
+        width: 50%;
+        margin-top: -14em;
+        float: right;
+    }
+    br{
+        margin: 1rem;
+    }
+    footer{
+        position: fixed;
+        bottom: 5%;
+        color: #cecece;
+    }
+</style>
 <body>
+
 
 <!-- Header -->
 <header id="header">
-    <h1><img src="{{ asset('images/logo.png') }}" alt="Fluimap" width="220px"></h1>
-    <p>Récoltez des données démographiques pour vos services <br />
-        consultez la <a href="http://api.fluidmap.fr/api/doc">documentation</a> de l'API pour commencer.</p>
+    <h1><img src="{{ asset('images/logo.png') }}" alt="fluidmap" width="220px"></h1>
+    <p>Récoltez les jeux de données démographiques anticipés<br/>pour vos services et applications de demain.</p>
+    <a href="https://fluidmap.fr" class="btn-light">Demonstration</a>
+    <a href="https://api.fluidmap.fr/api/doc" class="btn-primary">Documentation API</a>
+
 </header>
+<img class="map" src="{{ asset('images/bg.png') }}" alt="">
 
 <!-- Footer -->
 <footer id="footer">
-    <ul class="copyright">
-        <li>&copy; Fluidmap.</li>
-        <li>2018</li>
-    </ul>
+    <p class="copyright">
+        &copy; fluidmap 2018
+    </p>
 </footer>
 
-<!-- Scripts -->
-<script src="{{ asset('assets/js/ie/respond.min.js') }}"></script>
-<script src="{{ asset('assets/js/main.js') }}"></script>
 
 </body>
 </html>
