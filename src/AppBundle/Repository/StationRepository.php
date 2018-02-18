@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class StationRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getInfos()
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s.coordinates', 's.frequency')
+            ->where('s.frequency IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+    }
 }

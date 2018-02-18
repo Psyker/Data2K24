@@ -59,6 +59,12 @@ class LivingPlace
     private $area;
 
     /**
+     * @var array
+     * @ORM\Column(type="simple_array", nullable=true, name="frequency")
+     */
+    private $frequency;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -215,5 +221,21 @@ class LivingPlace
         $this->$function($value);
 
         return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getFrequency(): array
+    {
+        return $this->frequency;
+    }
+
+    /**
+     * @param array $frequency
+     */
+    public function setFrequency(array $frequency)
+    {
+        $this->frequency = $frequency;
     }
 }

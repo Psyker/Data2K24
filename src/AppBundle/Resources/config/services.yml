@@ -10,9 +10,13 @@ services:
     app.time_service:
         class: AppBundle\Services\TimeService
 
+    app.living_service:
+        class: AppBundle\Services\LivingPlaceService
+        arguments: ['@doctrine.orm.entity_manager', '@app.time_service']
+
     app.compute_data_command:
         class: AppBundle\Command\AppComputeDataCommand
-        arguments: ['@app.transport_service', '@app.touristic_service']
+        arguments: ['@app.transport_service', '@app.touristic_service', '@app.living_service']
 
     app.jwt_authenticator:
         class: AppBundle\Security\JWTAuthenticator

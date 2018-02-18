@@ -3,38 +3,63 @@
 namespace AppBundle\Services;
 
 
+use AppBundle\Entity\Event;
 use AppBundle\Entity\LivingPlace;
 use Doctrine\ORM\EntityManager;
+use Geokit\Math;
 
 class LivingPlaceService
 {
 
     private $entityManager;
 
+    private $timeService;
+
+    private $math;
+
+    private $dateline;
+
     const START_DATE = 1722556801;
     const TIME_SLOT = 2;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, TimeService $timeService)
     {
         $this->entityManager = $entityManager;
+        $this->timeService = $timeService;
+        $this->math = new Math();
+        $this->dateline = $this->timeService->getTimestamps();
     }
 
     public function getFrequency()
     {
-        $interval = new \DateInterval('PT'.self::TIME_SLOT.'H');
-        $dateline = new \DatePeriod((new \DateTime())->setTimestamp(self::START_DATE), $interval, (new \DateTime())->setTimestamp(self::START_DATE)->modify('+16 day'));
-        $livingPlaces = $this->entityManager->getRepository(LivingPlace::class)->findAll();
+        $index = 0;
+        $chunkSize = 10;
+        $dateline = $this->timeService->getTimestamps();
+        $livingPlaces = $this->entityManager->getRepository(LivingPlace::class)->getInfos();
+        $stations = $this->entityManager->getRepository('AppBundle:Station')->getInfos();
+        $touristicPlaces = $this->entityManager->getRepository('AppBundle:TouristicPlace')->getInfos();
+        $eventPlaces = $this->entityManager->getRepository('AppBundle:EventPlace')->findAll();
         /** @var LivingPlace $livingPlace */
-        foreach($livingPlaces as $livingPlace) {
+        foreach($livingPlaces as $key => $livingPlace) {
             $slots = [];
+            $capacityIndex = $this->computeCapacityIndex($livingPlace['area']);
             /** @var \DateTime $date */
             foreach ($dateline as $date) {
-                if (!empty($livingPlace->getArea())) {
-                    $area = $livingPlace->getArea();
-                    $capacityIndex = $this->computeCapacityIndex($area);
-                    $codePlace = $livingPlace->getActivityCode();
-                    
+                if (!empty($capacityIndex)) {
+                    $attractivenessIndex = $this->timeService->getAttractivenessByHour($date->getTimestamp(), $livingPlace['activityCode']);
+                    $transportFlow = $this->filterStationsClosest($livingPlace['coordinates'], $date->getTimestamp(), $stations);
+                    $touristicFlow = $this->filterTouristicPlacesClosest($livingPlace['coordinates'], $date->getTimestamp(), $touristicPlaces);
+                    $eventFlow = $this->filterEventsPlaceClosest($livingPlace['coordinates'], $date->getTimestamp(), $eventPlaces);
+                    $frequency = ( ( ( (float) $transportFlow + (float) $touristicFlow + (float) $eventFlow) / 15)  * (float) $capacityIndex) * (float) $attractivenessIndex;
+                    $slots[] = $frequency;
                 }
+            }
+            $this->entityManager->getRepository('AppBundle:LivingPlace')->find($livingPlace['id'])->setFrequency($slots);
+            echo $key;
+            $index++;
+            if (($index % $chunkSize) == 0) {
+                $this->entityManager->flush();
+                $this->entityManager->clear();
             }
         }
         $this->entityManager->flush();
@@ -42,30 +67,64 @@ class LivingPlaceService
     
     public function computeCapacityIndex(int $area)
     {
-        $capacityIndex = null;
-        
-        switch ($area) {
-            case 1 :
-                $capacityIndex = 0.02;
-                break;
-            case 2 :
-                $capacityIndex = 0.08;
-                break;
-            case 3:
-                $capacityIndex = 0.8;
-                break;
-            default:
-                break;
-        }
-        
+
+        $capacityIndex = ($area == 1) ? 0.25 : ($area == 2) ? 0.5 : ($area == 3) ? 1 : 0.5;
+
         return $capacityIndex;
     }
 
-    public function getAttractivenessIndex(float $capacityIndex)
-    {
-        switch ($capacityIndex) {
+    function getDistance( $latitude1, $longitude1, $latitude2, $longitude2 ) {
 
-        }
+        $d = $this->math->distanceHaversine([$latitude1, $longitude1], [$latitude2, $longitude2])->meters();
+        return $d;
     }
 
+    private function filterStationsClosest($livingPlace, int $timestamp, array $stations)
+    {
+        $frequency = 0;
+        foreach ($stations as $station) {
+            if (!empty($station['frequency'])) {
+                list($stationLatitude, $stationLongitude) = [$station['coordinates'][0], $station['coordinates'][1]];
+                list($livingLatitude, $livingLongitude) = [$livingPlace[0], $livingPlace[1]];
+                $distance = $this->getDistance($livingLatitude, $livingLongitude, $stationLatitude, $stationLongitude);
+                if ($distance <= 300) {
+                    $frequency += $station['frequency'][$this->timeService->getFrequencyByDates($timestamp, $this->dateline)];
+                }
+            }
+        };
+
+        return $frequency;
+    }
+
+    private function filterTouristicPlacesClosest($livingPlace, int $timestamp, array $touristicPlaces)
+    {
+        $frequency = 0;
+        foreach ($touristicPlaces as $touristicPlace) {
+            list($touristicLatitude, $touristicLongitude) = [$touristicPlace['geoPoint2d'][0], $touristicPlace['geoPoint2d'][1]];
+            list($livingLatitude, $livingLongitude) = [$livingPlace[0], $livingPlace[1]];
+            $distance = $this->getDistance($livingLatitude, $livingLongitude, $touristicLatitude, $touristicLongitude);
+            if ($distance <= 300) {
+                $frequency += $touristicPlace['frequency'][$this->timeService->getFrequencyByDates($timestamp, $this->dateline)];
+            }
+        };
+
+        return $frequency;
+    }
+
+    private function filterEventsPlaceClosest($livingPlace, int $timestamp, array $eventPlaces)
+    {
+        $frequency = 0;
+        foreach ($eventPlaces as $eventPlace) {
+            list($eventPlaceLatitude, $eventPlaceLongitude) = [$eventPlace->getGeoPoint()[0], $eventPlace->getGeoPoint()[1]];
+            list($livingLatitude, $livingLongitude) = [$livingPlace[0], $livingPlace[1]];
+            $distance = $this->getDistance($livingLatitude, $livingLongitude, $eventPlaceLatitude, $eventPlaceLongitude);
+            if ($distance <= 300) {
+                /** @var Event $event */
+                $event = $this->entityManager->getRepository('AppBundle:Event')->getEventsByDates($eventPlace, $timestamp, $timestamp + 7600);
+                $frequency += $event->getFiling() * $event->getEventPlace()->getCapacity();
+            }
+
+        };
+        return $frequency;
+    }
 }

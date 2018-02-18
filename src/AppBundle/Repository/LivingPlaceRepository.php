@@ -10,4 +10,12 @@ namespace AppBundle\Repository;
  */
 class LivingPlaceRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getInfos()
+    {
+       return $this->createQueryBuilder('l')
+            ->select('l.coordinates', 'l.activityCode', 'l.area', 'l.id')
+           ->getQuery()
+           ->getResult();
+    }
 }

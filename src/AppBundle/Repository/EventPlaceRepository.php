@@ -10,4 +10,8 @@ namespace AppBundle\Repository;
  */
 class EventPlaceRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getInfos()
+    {
+
+    }
 }

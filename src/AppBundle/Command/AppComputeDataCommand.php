@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Services\LivingPlaceService;
 use AppBundle\Services\TouristicService;
 use AppBundle\Services\TransportService;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -15,11 +16,14 @@ class AppComputeDataCommand extends ContainerAwareCommand
 
     private $touristicService;
 
-    public function __construct(TransportService $transportService, TouristicService $touristicService)
+    private $livingPlaceService;
+
+    public function __construct(TransportService $transportService, TouristicService $touristicService, LivingPlaceService $livingPlaceService)
     {
         parent::__construct();
         $this->transportService = $transportService;
         $this->touristicService = $touristicService;
+        $this->livingPlaceService = $livingPlaceService;
     }
 
     /**
@@ -37,6 +41,11 @@ class AppComputeDataCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+
+        $this->livingPlaceService->getFrequency();
+
+        exit;
+
         $output->writeln(['Computing frequency for each touristic place', '<info>Calculating...</info>']);
         $this->touristicService->getFrequency();
         $output->writeln('Done.');

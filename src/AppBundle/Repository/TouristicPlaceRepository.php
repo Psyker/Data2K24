@@ -10,4 +10,12 @@ namespace AppBundle\Repository;
  */
 class TouristicPlaceRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getInfos()
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.frequency', 't.geoPoint2d')
+            ->getQuery()
+            ->getResult();
+    }
 }

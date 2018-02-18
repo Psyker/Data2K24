@@ -31,7 +31,8 @@ class HeatController extends FOSRestController
             return new JsonResponse('timestampStart is required', 403);
         }
 
-        $frequencyIndex = $this->get('app.time_service')->getFrequencyByDates($timestampStart);
+        $dateline = $this->get('app.time_service')->getTimestamps();
+        $frequencyIndex = $this->get('app.time_service')->getFrequencyByDates($timestampStart, $dateline);
 
         $em = $this->getDoctrine()->getManager();
         $payload = [
