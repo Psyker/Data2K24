@@ -3,12 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * Event
  *
  * @ORM\Table(name="event")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\EventRepository")
+ * @ORM\Table(indexes={@Index(name="event_search_idx", columns={"filing", "step_name", "step_final"})})
  */
 class Event
 {

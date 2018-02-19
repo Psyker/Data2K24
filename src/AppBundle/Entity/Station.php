@@ -3,9 +3,11 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\StationRepository")
+ * @ORM\Table(indexes={@Index(name="station_search_idx", columns={"line_hint"})})
  */
 class Station
 {
@@ -31,7 +33,7 @@ class Station
 
     /**
      * @var int
-     * @ORM\Column(type="string", name="lintHint", nullable=true)
+     * @ORM\Column(type="string", name="line_hint", nullable=true)
      */
     private $lineHint;
 

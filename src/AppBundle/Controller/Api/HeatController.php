@@ -20,17 +20,35 @@ class HeatController extends FOSRestController
      *         type="string"
      *     )
      * )
+     * @SWG\Parameter(
+     *     name="rows",
+     *     required=false,
+     *     in="query",
+     *     type="number",
+     *     description="Number of rows",
+     * )
+     * @SWG\Parameter(
+     *     name="offset",
+     *     required=false,
+     *     in="query",
+     *     type="number",
+     *     description="The offset",
+     * )
      * @SWG\Tag(name="Heat Map")
+     * @param Request $request
      * @param int|null $timestampStart
      * @return JsonResponse
      * @internal param Request $request
      */
-    public function getHeatMap(int $timestampStart = null)
+    public function getHeatMap(Request $request, int $timestampStart = null)
     {
 
         if (empty($timestampStart)) {
             return new JsonResponse('timestampStart is required', 403);
         }
+        $rows = $request->get('rows', null);
+        $offset = $request->get('offset', null);
+
         @ini_set('memory_limit', -1);
 
         $dateline = $this->get('app.time_service')->getTimestamps();
@@ -40,45 +58,45 @@ class HeatController extends FOSRestController
         $payload = [
             'type' => 'FeatureCollection',
         ];
-        $touristicPlaces = $em->getRepository('AppBundle:TouristicPlace')->findAll();
-        $stations = $em->getRepository('AppBundle:Station')->findAll();
-        $eventPlaces = $em->getRepository('AppBundle:EventPlace')->findAll();
-        $livingPlaces = $em->getRepository('AppBundle:LivingPlace')->getFrequencyAndCoordinates();
+        $touristicPlaces = $em->getRepository('AppBundle:TouristicPlace')->findPaginated($rows, $offset);
+        $stations = $em->getRepository('AppBundle:Station')->findPaginated($rows, $offset);
+        $eventPlaces = $em->getRepository('AppBundle:EventPlace')->findPaginated($rows, $offset);
+        $livingPlaces = $em->getRepository('AppBundle:LivingPlace')->findPaginated($rows, $offset);
 
         foreach ($touristicPlaces as $touristicPlace) {
             $payload['features'][] = [
                 'properties' => [
-                    'hint' => $touristicPlace->getFrequency()[$frequencyIndex]
+                    'hint' => $touristicPlace['frequency'][$frequencyIndex]
                 ],
                 'geometry' => [
                     'type' => 'Point',
-                    'coordinates' => $touristicPlace->getGeoPoint2d()
+                    'coordinates' => $touristicPlace['geoPoint2d']
                 ]
             ];
         }
         foreach ($stations as $station) {
-            if ($station->getFrequency()) {
+            if ($station['frequency']) {
                 $payload['features'][] = [
                     'properties' => [
-                        'hint' => $station->getFrequency()[$frequencyIndex]
+                        'hint' => $station['frequency'][$frequencyIndex]
                     ],
                     'geometry' => [
                         'type' => 'Point',
-                        'coordinates' => $station->getCoordinates()
+                        'coordinates' => $station['coordinates']
                     ]
                 ];
             }
         }
         foreach ($eventPlaces as $eventPlace) {
-            $eventCount = count($em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace, $timestampStart, $timestampStart + 7600));
+            $eventCount = count($em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace['id'], $timestampStart, $timestampStart + 7600));
             if ($eventCount !== 0) {
                 $payload['features'][] = [
                     'properties' => [
-                        'hint' => ($em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace, $timestampStart, $timestampStart + 7600)[0])->getFiling() * $eventPlace->getCapacity()
+                        'hint' => ($em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace['id'], $timestampStart, $timestampStart + 7600)[0])->getFiling() * $eventPlace['capacity']
                     ],
                     'geometry' => [
                         'type' => 'Point',
-                        'coordinates' => $eventPlace->getGeoPoint()
+                        'coordinates' => $eventPlace['geoPoint2d']
                     ]
                 ];
             }

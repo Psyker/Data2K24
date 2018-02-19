@@ -3,9 +3,11 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\LivingPlaceRepository")
+ * @ORM\Table(indexes={@Index(name="living_search_idx", columns={"way_type", "situation", "district", "area", "activity_label"})})
  */
 class LivingPlace
 {

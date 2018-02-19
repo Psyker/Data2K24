@@ -24,14 +24,21 @@ class EventRepository extends EntityRepository
      * @param int|null $dateStart
      * @return array|mixed
      */
-    public function getEventsByDates(EventPlace $eventPlace, int $dateStart = null, int $dateEnd = null)
+    public function getEventsByDates($eventPlace, int $dateStart = null, int $dateEnd = null)
     {
         /** @var EventPlace $place */
-        $events = $this->createQueryBuilder('e')
-            ->where('e.eventPlace = :eventPlace')
-            ->setParameter(':eventPlace', $eventPlace)
-            ->getQuery()
-            ->getResult();
+        $query = $this->createQueryBuilder('e');
+            if (is_int($eventPlace)) {
+                $query->join('e.eventPlace', 'ev')
+                ->andWhere('ev.id = :eventPlace')
+                ->setParameter(':eventPlace', $eventPlace);
+            } else {
+                $query->where('e.eventPlace = :eventPlace')
+                    ->setParameter(':eventPlace', $eventPlace);
+            }
+
+        $events = $query->getQuery()
+        ->getResult();
 
         if (!$dateEnd || !$dateStart) {
             return $events;

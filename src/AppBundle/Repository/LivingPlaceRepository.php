@@ -19,12 +19,14 @@ class LivingPlaceRepository extends \Doctrine\ORM\EntityRepository
            ->getResult();
     }
 
-    public function getFrequencyAndCoordinates()
+    public function findPaginated(int $rows = null, int $offset = null)
     {
         return $this->createQueryBuilder('l')
             ->select('l.coordinates', 'l.frequency')
             ->where('l.frequency IS NOT NULL')
             ->getQuery()
+            ->setFirstResult($offset)
+            ->setMaxResults($rows)
             ->getResult();
     }
 }

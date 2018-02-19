@@ -15,10 +15,6 @@ class LivingPlaceService
 
     private $timeService;
 
-    private $math;
-
-    private $dateline;
-
     const START_DATE = 1722556801;
     const TIME_SLOT = 2;
 
@@ -26,8 +22,7 @@ class LivingPlaceService
     {
         $this->entityManager = $entityManager;
         $this->timeService = $timeService;
-        $this->math = new Math();
-        $this->dateline = $this->timeService->getTimestamps();
+//        $this->math = new Math();
     }
 
     public function getFrequency()
@@ -81,7 +76,7 @@ class LivingPlaceService
 //              $frequency = ( ( ( (float) $transportFlow + (float) $touristicFlow + (float) $eventFlow) / 15)  * (float) $capacityIndex) * (float) $attractivenessIndex;
 
             }
-            $this->entityManager->getRepository('AppBundle:LivingPlace')->find($livingPlace['id'])->setFrequency($slots);
+            !(array_sum($slots) > 0) ?: $this->entityManager->getRepository('AppBundle:LivingPlace')->find($livingPlace['id'])->setFrequency($slots);
             $index++;
             if (($index % $chunkSize) == 0) {
                 $this->entityManager->flush();
