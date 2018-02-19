@@ -20,7 +20,7 @@ class StationRepository extends \Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
-    public function findPaginated(int $rows, int $offset)
+    public function findPaginated(int $rows = null, int $offset = null)
     {
        return  $this->createQueryBuilder('s')
             ->select('s.frequency', 's.coordinates')

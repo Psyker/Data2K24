@@ -17,7 +17,7 @@ class EventPlaceRepository extends EntityRepository
 
     }
 
-    public function findPaginated(int $rows, int $offset)
+    public function findPaginated(int $rows = null, int $offset = null)
     {
        return $this->createQueryBuilder('e')
             ->select('e.capacity', 'e.geoPoint', 'e.capacity', 'e.id')
