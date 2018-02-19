@@ -18,7 +18,7 @@ class TimeService
             'AF101'
         ],
         'WORK' => [
-            'AF102', 'AF104' ,
+            'AF102', 'AF104',
             'SA501', 'SA507', 'SA513',
             'SB201', 'SB203', 'SB101',
             'AC101', 'AC102',

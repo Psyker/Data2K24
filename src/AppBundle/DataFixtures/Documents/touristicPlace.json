@@ -29,15 +29,15 @@
         "annualFrequency": 10000000,
         "placeId": 5
     }, {
-        "placeName": "Jardin des Tuileries",
-        "geo_point_2d": [49.1090336,6.9457535000000235],
-        "annualFrequency": 14000000,
-        "placeId": 6
-    },
+    "placeName": "Jardin des Tuileries",
+    "geo_point_2d": [49.1090336,6.9457535000000235],
+    "annualFrequency": 14000000,
+    "placeId": 6
+},
     {
         "placeName": "Place de la Concorde",
         "geo_point_2d": [48.8656331,2.3212356999999884],
-        "annualFrequency": 182500000,
+        "annualFrequency": 18250000,
         "placeId": 7
     },
     {
@@ -261,5 +261,11 @@
         "geo_point_2d": [48.833354,2.414208],
         "annualFrequency": 759000,
         "placeId": 45
+    },
+    {
+        "placeName": "Jardin du Luxembourg",
+        "geo_point_2d": [48.8462220,2.3371600],
+        "annualFrequency": 1000000,
+        "placeId": 46
     }
 ]

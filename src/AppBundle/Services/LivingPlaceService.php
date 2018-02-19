@@ -2,11 +2,8 @@
 
 namespace AppBundle\Services;
 
-
-use AppBundle\Entity\Event;
 use AppBundle\Entity\LivingPlace;
 use Doctrine\ORM\EntityManager;
-use Geokit\Math;
 
 class LivingPlaceService
 {
@@ -29,7 +26,7 @@ class LivingPlaceService
     {
         @ini_set('memory_limit', -1);
         $index = 0;
-        $chunkSize = 10;
+        $chunkSize = 500;
         $dateline = $this->timeService->getTimestamps();
         $livingPlaces = $this->entityManager->getRepository(LivingPlace::class)->getInfos();
 //        $stations = $this->entityManager->getRepository('AppBundle:Station')->getInfos();
@@ -61,13 +58,11 @@ class LivingPlaceService
                 $potentialFrequency *= 0.1;
             }
 
-
             /** @var \DateTime $date */
             foreach ($dateline as $date) {
                 $attractivityPonderedFrequency = $this->timeService->getAttractivenessByHour($date->getTimestamp(), $activityCode) * $potentialFrequency;
                 $frequency = $attractivityPonderedFrequency * $this->timeService->getDistrictPonderationByHour($date->getTimestamp(), $district);
                 $slots[] = $frequency;
-
 
 //              $indexKey = $this->timeService->getFrequencyByDates($date->getTimestamp(), $this->dateline);
 //              $transportFlow = $this->filterStationsClosest($livingPlace['coordinates'], $indexKey, $stations);
