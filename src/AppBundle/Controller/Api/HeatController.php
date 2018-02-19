@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Entity\Event;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Swagger\Annotations as SWG;
@@ -19,6 +20,13 @@ class HeatController extends FOSRestController
      *     @SWG\Schema(
      *         type="string"
      *     )
+     * )
+     * @SWG\Parameter(
+     *     name="timestampStart",
+     *     required=true,
+     *     in="path",
+     *     type="number",
+     *     description="the start date"
      * )
      * @SWG\Parameter(
      *     name="rows",
@@ -70,7 +78,7 @@ class HeatController extends FOSRestController
                 ],
                 'geometry' => [
                     'type' => 'Point',
-                    'coordinates' => $touristicPlace['geoPoint2d']
+                    'coordinates' => $touristicPlace['coordinates']
                 ]
             ];
         }
@@ -88,11 +96,13 @@ class HeatController extends FOSRestController
             }
         }
         foreach ($eventPlaces as $eventPlace) {
-            $eventCount = count($em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace['id'], $timestampStart, $timestampStart + 7600));
-            if ($eventCount !== 0) {
+            $event = $em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace['id'], $timestampStart, $timestampStart + 7600);
+            if (!empty($eventCount)) {
+                /** @var Event $firstEvent */
+                $firstEvent = $event[0];
                 $payload['features'][] = [
                     'properties' => [
-                        'hint' => ($em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace['id'], $timestampStart, $timestampStart + 7600)[0])->getFiling() * $eventPlace['capacity']
+                        'hint' => $firstEvent->getFiling() * $eventPlace['capacity']
                     ],
                     'geometry' => [
                         'type' => 'Point',

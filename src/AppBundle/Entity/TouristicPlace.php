@@ -31,9 +31,9 @@ class TouristicPlace
     /**
      * @var array
      *
-     * @ORM\Column(name="geo_point_2d", type="simple_array")
+     * @ORM\Column(name="coordinates", type="simple_array")
      */
-    private $geoPoint2d;
+    private $coordinates;
 
     /**
      * @var int
@@ -85,13 +85,13 @@ class TouristicPlace
     /**
      * Set geoPoint2d.
      *
-     * @param array $geoPoint2d
+     * @param array $coordinates
      *
      * @return TouristicPlace
      */
-    public function setGeoPoint2d($geoPoint2d)
+    public function setCoordinates($coordinates)
     {
-        $this->geoPoint2d = $geoPoint2d;
+        $this->coordinates = $coordinates;
 
         return $this;
     }
@@ -101,9 +101,9 @@ class TouristicPlace
      *
      * @return array
      */
-    public function getGeoPoint2d()
+    public function getCoordinates()
     {
-        return $this->geoPoint2d;
+        return $this->coordinates;
     }
 
     /**

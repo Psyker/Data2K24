@@ -2,9 +2,14 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\ComputedData;
+use AppBundle\Entity\LivingPlace;
+use AppBundle\Entity\Station;
+use AppBundle\Entity\TouristicPlace;
 use AppBundle\Services\LivingPlaceService;
 use AppBundle\Services\TouristicService;
 use AppBundle\Services\TransportService;
+use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

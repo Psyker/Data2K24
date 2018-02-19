@@ -24,7 +24,7 @@ class TouristicPlaceRepository extends EntityRepository
     public function findPaginated(int $rows = null, int $offset = null)
     {
        return $this->createQueryBuilder('t')
-        ->select('t.frequency', 't.geoPoint2d')
+        ->select('t.frequency', 't.coordinates')
         ->getQuery()
         ->setFirstResult($offset)
         ->setMaxResults($rows)

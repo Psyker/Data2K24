@@ -43,7 +43,7 @@ class LoadPlacesData extends AbstractFixture implements FixtureInterface, Contai
         $decodedTouristicPlaces = json_decode($touristicPlaces, true);
         foreach ($decodedTouristicPlaces as $touristicPlace) {
             $newTouristicPlace = new TouristicPlace();
-            $newTouristicPlace->setGeoPoint2d($touristicPlace['geo_point_2d'])
+            $newTouristicPlace->setCoordinates($touristicPlace['geo_point_2d'])
                 ->setAnnualFrequency($touristicPlace['annualFrequency'])
                 ->setPlaceName($touristicPlace['placeName']);
             $manager->persist($newTouristicPlace);
