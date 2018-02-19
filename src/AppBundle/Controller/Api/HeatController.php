@@ -71,6 +71,7 @@ class HeatController extends FOSRestController
         $eventPlaces = $em->getRepository('AppBundle:EventPlace')->findPaginated($rows, $offset);
         $livingPlaces = $em->getRepository('AppBundle:LivingPlace')->findPaginated($rows, $offset);
 
+
         foreach ($touristicPlaces as $touristicPlace) {
             $payload['features'][] = [
                 'properties' => [
@@ -96,20 +97,17 @@ class HeatController extends FOSRestController
             }
         }
         foreach ($eventPlaces as $eventPlace) {
-            $event = $em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace['id'], $timestampStart, $timestampStart + 7600);
-            if (!empty($eventCount)) {
+                $event = $em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace['id'], $timestampStart, $timestampStart + 7600);
                 /** @var Event $firstEvent */
-                $firstEvent = $event[0];
                 $payload['features'][] = [
                     'properties' => [
-                        'hint' => $firstEvent->getFiling() * $eventPlace['capacity']
+                        'hint' => ($event) ? ($event[0])->getFiling() * $eventPlace['capacity'] : 0
                     ],
                     'geometry' => [
                         'type' => 'Point',
-                        'coordinates' => $eventPlace['geoPoint2d']
+                        'coordinates' => $eventPlace['geo_point']
                     ]
                 ];
-            }
         }
         foreach ($livingPlaces as $livingPlace) {
             $payload['features'][] = [
