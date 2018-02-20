@@ -46,9 +46,20 @@ class EventPlace
      */
     private $capacity;
 
+    /**
+     * Many eventPlace have Many stations.
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Station")
+     * @ORM\JoinTable(name="event_place_stations",
+     *      joinColumns={@ORM\JoinColumn(name="event_place_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORm\JoinColumn(name="station_id", referencedColumnName="id")}
+     *      )
+     */
+    private $stationsClosest;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
+        $this->stationsClosest = new ArrayCollection();
     }
 
     /**
@@ -143,4 +154,24 @@ class EventPlace
 
         return $this;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStationsClosest()
+    {
+        return $this->stationsClosest;
+    }
+
+    /**
+     * @param mixed $stationsClosest
+     * @return EventPlace
+     */
+    public function setStationsClosest($stationsClosest)
+    {
+        $this->stationsClosest = $stationsClosest;
+
+        return $this;
+    }
+
 }

@@ -12,10 +12,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class EventPlaceRepository extends EntityRepository
 {
-    public function getInfos()
-    {
-
-    }
 
     public function findPaginated(int $rows = null, int $offset = null)
     {

@@ -23,10 +23,28 @@ class StationRepository extends \Doctrine\ORM\EntityRepository
     public function findPaginated(int $rows = null, int $offset = null)
     {
        return  $this->createQueryBuilder('s')
-            ->select('s.frequency', 's.coordinates')
+            ->select('s.hints', 's.coordinates')
             ->getQuery()
             ->setFirstResult($offset)
             ->setMaxResults($rows)
+            ->getResult();
+    }
+
+    public function getFrequency()
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s.frequency')
+            ->where('s.frequency IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getFrequenciesAndId()
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s.id', 's.frequency')
+            ->andWhere('s.frequency IS NOT NULL')
+            ->getQuery()
             ->getResult();
     }
 }

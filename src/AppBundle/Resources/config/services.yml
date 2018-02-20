@@ -16,7 +16,11 @@ services:
 
     app.compute_data_command:
         class: AppBundle\Command\AppComputeDataCommand
-        arguments: ['@app.transport_service', '@app.touristic_service', '@app.living_service']
+        arguments: ['@doctrine.orm.entity_manager','@app.transport_service', '@app.touristic_service', '@app.living_service', '@app.time_service', '@app.place_service']
+
+    app.place_service:
+        class: AppBundle\Services\PlaceService
+        arguments: ['@doctrine.orm.entity_manager']
 
     app.jwt_authenticator:
         class: AppBundle\Security\JWTAuthenticator

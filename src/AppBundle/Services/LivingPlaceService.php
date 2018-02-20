@@ -32,6 +32,7 @@ class LivingPlaceService
 //        $stations = $this->entityManager->getRepository('AppBundle:Station')->getInfos();
 //        $touristicPlaces = $this->entityManager->getRepository('AppBundle:TouristicPlace')->getInfos();
 //        $eventPlaces = $this->entityManager->getRepository('AppBundle:EventPlace')->findAll();
+
         /** @var LivingPlace $livingPlace */
         foreach($livingPlaces as $key => $livingPlace) {
             $activityCode = $livingPlace['activityCode'];

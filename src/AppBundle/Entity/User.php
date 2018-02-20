@@ -3,38 +3,67 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="api_users")
+ * @Serializer\ExclusionPolicy("all")
+ * @UniqueEntity(
+ *     fields={"username"},
+ *     message="Duplicate username",
+ *     errorPath="username"
+ * )
  */
 class User implements UserInterface
 {
     /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="UUID")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose
      */
     protected $id;
 
     /**
      * @var string
-     * @ORM\Column(type="string", nullable=false, unique=true)
+     *
+     * @ORM\Column(name="username", type="string", length=255, unique=true)
+     * @Serializer\Expose
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", nullable=false, unique=true)
      * @var string
+     *
+     * @ORM\Column(name="password", type="string", length=255)
      */
-    private $apiKey;
+    private $password;
 
     /**
-     * @ORM\Column(type="string", nullable=false)
+     * The JsonWebToken is not persisted.
+     * It's only used in the FormLoginAuthenticator.
+     *
      * @var string
      */
-    private $apiSecret;
+    private $jwt;
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(name="roles", type="json_array")
+     * @Serializer\Expose
+     */
+    private $roles;
+
+    public function __construct()
+    {
+        $this->roles = array();
+    }
 
     /**
      * @return mixed
@@ -42,91 +71,6 @@ class User implements UserInterface
     public function getId()
     {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getApiKey(): string
-    {
-        return $this->apiKey;
-    }
-
-    /**
-     * @param string $apiKey
-     * @return User
-     */
-    public function setApiKey(string $apiKey): User
-    {
-        $this->apiKey = $apiKey;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getApiSecret(): string
-    {
-        return $this->apiSecret;
-    }
-
-    /**
-     * @param string $apiSecret
-     * @return User
-     */
-    public function setApiSecret(string $apiSecret): User
-    {
-        $this->apiSecret = $apiSecret;
-
-        return $this;
-    }
-
-
-    /**
-     * Returns the roles granted to the user.
-     *
-     * <code>
-     * public function getRoles()
-     * {
-     *     return array('ROLE_USER');
-     * }
-     * </code>
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return (Role|string)[] The user roles
-     */
-    public function getRoles()
-    {
-        return ['ROLE_USER'];
-    }
-
-    /**
-     * Returns the password used to authenticate the user.
-     *
-     * This should be the encoded password. On authentication, a plain-text
-     * password will be salted, encoded, and then compared to this value.
-     *
-     * @return string The password
-     */
-    public function getPassword()
-    {
-        return null;
-    }
-
-    /**
-     * Returns the salt that was originally used to encode the password.
-     *
-     * This can return null if the password was not encoded using a salt.
-     *
-     * @return string|null The salt
-     */
-    public function getSalt()
-    {
-        return null;
     }
 
     /**
@@ -144,6 +88,85 @@ class User implements UserInterface
         $this->username = $username;
 
         return $this;
+    }
+
+    /**
+     * Returns the password used to authenticate the user.
+     *
+     * This should be the encoded password. On authentication, a plain-text
+     * password will be salted, encoded, and then compared to this value.
+     *
+     * @return string The password
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJwt()
+    {
+        return $this->jwt;
+    }
+    /**
+     * @param string $jwt
+     * @return User
+     */
+    public function setJwt($jwt)
+    {
+        $this->jwt = $jwt;
+        return $this;
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     *
+     * <code>
+     * public function getRoles()
+     * {
+     *     return array('ROLE_USER');
+     * }
+     * </code>
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     * @return array (Role|string)[] The user roles
+     */
+    public function getRoles()
+    {
+        $roles = $this->roles;
+        //ensure at least one role.
+        $roles[] = 'ROLE_USER';
+        return array_unique($roles);
+    }
+
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        return null;
     }
 
     /**

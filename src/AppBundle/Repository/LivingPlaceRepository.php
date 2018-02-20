@@ -25,11 +25,29 @@ class LivingPlaceRepository extends EntityRepository
     public function findPaginated(int $rows = null, int $offset = null)
     {
         return $this->createQueryBuilder('l')
-            ->select('l.coordinates', 'l.frequency')
-            ->where('l.frequency IS NOT NULL')
+            ->select('l.coordinates', 'l.hints')
+            ->where('l.hints IS NOT NULL')
             ->getQuery()
             ->setFirstResult($offset)
             ->setMaxResults($rows)
+            ->getResult();
+    }
+
+    public function getFrequency()
+    {
+        return $this->createQueryBuilder('l')
+            ->select('l.frequency')
+            ->where('l.frequency IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getFrequenciesAndId()
+    {
+        return $this->createQueryBuilder('l')
+            ->select('l.id', 'l.frequency')
+            ->andWhere('l.frequency IS NOT NULL')
+            ->getQuery()
             ->getResult();
     }
 }

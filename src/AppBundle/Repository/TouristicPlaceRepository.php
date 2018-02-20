@@ -24,10 +24,28 @@ class TouristicPlaceRepository extends EntityRepository
     public function findPaginated(int $rows = null, int $offset = null)
     {
        return $this->createQueryBuilder('t')
-        ->select('t.frequency', 't.coordinates')
+        ->select('t.hints', 't.coordinates')
         ->getQuery()
         ->setFirstResult($offset)
         ->setMaxResults($rows)
         ->getResult();
+    }
+
+    public function getFrequency()
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.frequency')
+            ->where('t.frequency IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getFrequenciesAndId()
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.id', 't.frequency')
+            ->andWhere('t.frequency IS NOT NULL')
+            ->getQuery()
+            ->getResult();
     }
 }

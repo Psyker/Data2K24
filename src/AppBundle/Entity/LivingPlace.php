@@ -67,6 +67,12 @@ class LivingPlace
     private $frequency;
 
     /**
+     * @var array
+     * @ORM\Column(type="simple_array", nullable=true, name="hints")
+     */
+    private $hints;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -237,6 +243,25 @@ class LivingPlace
     public function setWayType($wayType): LivingPlace
     {
         $this->wayType = $wayType;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHints(): array
+    {
+        return $this->hints;
+    }
+
+    /**
+     * @param array $hints
+     * @return LivingPlace
+     */
+    public function setHints(array $hints): LivingPlace
+    {
+        $this->hints = $hints;
 
         return $this;
     }

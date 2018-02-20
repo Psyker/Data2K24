@@ -3,6 +3,8 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Event;
+use AppBundle\Entity\EventPlace;
+use AppBundle\Entity\Station;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Swagger\Annotations as SWG;
@@ -75,49 +77,57 @@ class HeatController extends FOSRestController
         foreach ($touristicPlaces as $touristicPlace) {
             $payload['features'][] = [
                 'properties' => [
-                    'hint' => $touristicPlace['frequency'][$frequencyIndex]
+                    'hint' => $touristicPlace['hints'][$frequencyIndex],
                 ],
                 'geometry' => [
                     'type' => 'Point',
-                    'coordinates' => $touristicPlace['coordinates']
-                ]
+                    'coordinates' => $touristicPlace['coordinates'],
+                ],
             ];
         }
         foreach ($stations as $station) {
             if ($station['frequency']) {
                 $payload['features'][] = [
                     'properties' => [
-                        'hint' => $station['frequency'][$frequencyIndex]
+                        'hint' => $station['hints'][$frequencyIndex],
                     ],
                     'geometry' => [
                         'type' => 'Point',
-                        'coordinates' => $station['coordinates']
-                    ]
+                        'coordinates' => $station['coordinates'],
+                    ],
                 ];
             }
         }
-        foreach ($eventPlaces as $eventPlace) {
+        /** @var EventPlace $eventPlace */
+        foreach ($eventPlaces as $key => $eventPlace) {
                 $event = $em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace['id'], $timestampStart, $timestampStart + 7600);
                 /** @var Event $firstEvent */
                 $payload['features'][] = [
                     'properties' => [
-                        'hint' => ($event) ? ($event[0])->getFiling() * $eventPlace['capacity'] : 0
+                        'hint' => ($event) ? ($event[0])->getFiling() * $eventPlace['capacity'] : 0,
                     ],
                     'geometry' => [
                         'type' => 'Point',
-                        'coordinates' => $eventPlace['geoPoint']
-                    ]
+                        'coordinates' => $eventPlace['geoPoint'],
+                    ],
                 ];
+                /** @var Station $station */
+                foreach ($eventPlace->getStationsClosest() as $station) {
+                    $payload['features'][$key]['properties']['stations_closest'][] = [
+                        'line' => $station->getLineHint(),
+                        'name' => $station->getName()
+                    ];
+                }
         }
         foreach ($livingPlaces as $livingPlace) {
             $payload['features'][] = [
                 'properties' => [
-                    'hint' => $livingPlace['frequency'][$frequencyIndex]
+                    'hint' => $livingPlace['hints'][$frequencyIndex],
                 ],
                 'geometry' => [
                     'type' => 'Point',
-                    'coordinates' => $livingPlace['coordinates']
-                ]
+                    'coordinates' => $livingPlace['coordinates'],
+                ],
             ];
         }
 

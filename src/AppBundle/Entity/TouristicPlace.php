@@ -49,6 +49,12 @@ class TouristicPlace
     private $frequency;
 
     /**
+     * @var array
+     * @ORM\Column(type="simple_array", name="hints", nullable=true)
+     */
+    private $hints;
+
+    /**
      * Get id.
      *
      * @return int
@@ -147,5 +153,24 @@ class TouristicPlace
     public function getFrequency()
     {
         return $this->frequency;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHints(): array
+    {
+        return $this->hints;
+    }
+
+    /**
+     * @param array $hints
+     * @return TouristicPlace
+     */
+    public function setHints(array $hints): TouristicPlace
+    {
+        $this->hints = $hints;
+
+        return $this;
     }
 }

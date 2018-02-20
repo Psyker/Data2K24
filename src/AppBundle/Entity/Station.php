@@ -62,6 +62,12 @@ class Station
     private $frequency;
 
     /**
+     * @var array
+     * @ORM\Column(type="simple_array", name="hints", nullable=true)
+     */
+    private $hints;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -209,6 +215,25 @@ class Station
     public function set($function, $value)
     {
         $this->$function($value);
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHints(): array
+    {
+        return $this->hints;
+    }
+
+    /**
+     * @param array $hints
+     * @return Station
+     */
+    public function setHints(array $hints): Station
+    {
+        $this->hints = $hints;
 
         return $this;
     }
