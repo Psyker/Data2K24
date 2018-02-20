@@ -105,7 +105,7 @@ class HeatController extends FOSRestController
                     ],
                     'geometry' => [
                         'type' => 'Point',
-                        'coordinates' => $eventPlace['geo_point']
+                        'coordinates' => $eventPlace['geoPoint']
                     ]
                 ];
         }
