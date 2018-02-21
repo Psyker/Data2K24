@@ -45,6 +45,7 @@ class EventController extends FOSRestController
                     'name' => $eventPlace->getName(),
                     'geo_point_2d' => $eventPlace->getGeoPoint(),
                     'capacity' => $eventPlace->getCapacity(),
+                    'hints' => $eventPlace->getHints()
                 ],
             ];
             $payload['features'][$key]['geometry'] = [
@@ -63,6 +64,13 @@ class EventController extends FOSRestController
                     'filing' => $event->getFiling(),
                     'step_name' => $event->getStepName(),
                     'step_final' => $event->isStepFinal(),
+                ];
+            }
+            /** @var Station $station */
+            foreach ($eventPlace->getStationsClosest() as $station) {
+                $payload['features'][$key]['properties']['stations_closest'][] = [
+                    'line' => $station->getLineHint(),
+                    'name' => $station->getName(),
                 ];
             }
         }
@@ -120,25 +128,26 @@ class EventController extends FOSRestController
         $payload = [
             'type' => 'FeatureCollection',
             'features' => [
-                [
-                    'type' => 'Feature',
-                    'properties' => [
-                        'id' => $eventPlace->getId(),
-                        'type' => 'event_place',
-                        'name' => $eventPlace->getName(),
-                        'geo_point_2d' => $eventPlace->getGeoPoint(),
-                        'capacity' => $eventPlace->getCapacity(),
-                    ],
-                    'geometry' => [
-                        'type' => 'Point',
-                        'coordinates' => $eventPlace->getGeoPoint(),
-                    ],
+                'type' => 'Feature',
+                'properties' => [
+                    'id' => $eventPlace->getId(),
+                    'type' => 'event_place',
+                    'name' => $eventPlace->getName(),
+                    'geo_point_2d' => $eventPlace->getGeoPoint(),
+                    'capacity' => $eventPlace->getCapacity(),
+                    'hints' => $eventPlace->getHints(),
+                    'events' => [],
+                    'stations_closest' => []
+                ],
+                'geometry' => [
+                    'type' => 'Point',
+                    'coordinates' => $eventPlace->getGeoPoint(),
                 ],
             ],
         ];
         /** @var Event $event */
         foreach ($events as $event) {
-            $payload['features'][0]['properties']['events'][] = [
+            $payload['features']['properties']['events'][] = [
                 'id' => $event->getId(),
                 'place_id' => $event->getEventPlace()->getId(),
                 'place_name' => $event->getEventPlace()->getName(),
@@ -151,10 +160,11 @@ class EventController extends FOSRestController
             ];
         }
         /** @var Station $station */
-        foreach ($eventPlace->getStationsClosest() as $station) {
+        foreach ($eventPlace->getStationsClosest() as $key => $station) {
             $payload['features']['properties']['stations_closest'][] = [
                 'line' => $station->getLineHint(),
                 'name' => $station->getName(),
+                'hints' => $station->getHints()
             ];
         }
 

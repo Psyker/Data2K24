@@ -146,7 +146,7 @@ class Station
     /**
      * @return int
      */
-    public function getLineHint(): int
+    public function getLineHint()
     {
         return $this->lineHint;
     }
@@ -155,7 +155,7 @@ class Station
      * @param string $lineHint
      * @return Station
      */
-    public function setLineHint(string $lineHint): Station
+    public function setLineHint($lineHint): Station
     {
         $this->lineHint = $lineHint;
 
