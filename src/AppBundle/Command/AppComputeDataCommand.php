@@ -119,13 +119,12 @@ class AppComputeDataCommand extends ContainerAwareCommand
         foreach ($places as $pInfos) {
             $slots = [];
             foreach ($pInfos['frequency'] as $frequency) {
+                !($frequency > 10000) ?: $frequency = 10000;
                 $hint = (float) number_format(($frequency * 10) / 10000,2);
-                if ($hint > 0 && $hint < 1) {
+                if ($hint > 0 && $hint < 0.5) {
                     $hint = 0.5;
                 } else if ($hint > 10) {
                     $hint = 10;
-                } else if ($hint == 0) {
-                    $hint = 0;
                 }
                 $slots[] = $hint;
             }
