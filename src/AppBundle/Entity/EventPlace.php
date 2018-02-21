@@ -56,6 +56,18 @@ class EventPlace
      */
     private $stationsClosest;
 
+    /**
+     * @var array
+     * @ORM\Column(type="simple_array", name="frequency", nullable=true)
+     */
+    private $frequency;
+
+    /**
+     * @var array
+     * @ORM\Column(type="simple_array", name="hints", nullable=true)
+     */
+    private $hints;
+
     public function __construct()
     {
         $this->events = new ArrayCollection();
@@ -173,5 +185,44 @@ class EventPlace
 
         return $this;
     }
+
+    /**
+     * @return array
+     */
+    public function getFrequency(): array
+    {
+        return $this->frequency;
+    }
+
+    /**
+     * @param array $frequency
+     * @return EventPlace
+     */
+    public function setFrequency(array $frequency): EventPlace
+    {
+        $this->frequency = $frequency;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHints(): array
+    {
+        return $this->hints;
+    }
+
+    /**
+     * @param array $hints
+     * @return EventPlace
+     */
+    public function setHints(array $hints): EventPlace
+    {
+        $this->hints = $hints;
+
+        return $this;
+    }
+
 
 }

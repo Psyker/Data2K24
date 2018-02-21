@@ -22,4 +22,13 @@ class EventPlaceRepository extends EntityRepository
             ->setMaxResults($rows)
             ->getResult();
     }
+
+    public function getFrequenciesAndId()
+    {
+        return $this->createQueryBuilder('e')
+            ->select('e.id', 'e.frequency')
+            ->andWhere('e.frequency IS NOT NULL')
+            ->getQuery()
+            ->getResult();
+    }
 }

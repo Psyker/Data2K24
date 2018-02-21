@@ -100,11 +100,10 @@ class HeatController extends FOSRestController
         }
         /** @var EventPlace $eventPlace */
         foreach ($eventPlaces as $key => $eventPlace) {
-                $event = $em->getRepository('AppBundle:Event')->getEventsByDates($eventPlace['id'], $timestampStart, $timestampStart + 7600);
                 /** @var Event $firstEvent */
                 $payload['features'][] = [
                     'properties' => [
-                        'hint' => ($event) ? ($event[0])->getFiling() * $eventPlace['capacity'] : 0,
+                        'hint' => $eventPlace->getHints()[$frequencyIndex]
                     ],
                     'geometry' => [
                         'type' => 'Point',

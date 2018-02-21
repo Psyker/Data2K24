@@ -3,6 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Entity\ComputedData;
+use AppBundle\Entity\EventPlace;
 use AppBundle\Entity\LivingPlace;
 use AppBundle\Entity\Station;
 use AppBundle\Entity\TouristicPlace;
@@ -15,6 +16,7 @@ use AppBundle\Services\TimeService;
 use AppBundle\Services\TouristicService;
 use AppBundle\Services\TransportService;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityRepository;
 use PDO;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -81,6 +83,12 @@ class AppComputeDataCommand extends ContainerAwareCommand
         $this->livingPlaceService->getFrequency();
         $output->writeln('Done.');
 
+        $output->writeln(['Computing frequency for each event place', '<info>Calculating...</info>']);
+        $this->placeService->getFrequency();
+        $output->writeln('Done.');
+
+        $this->entityManager->getConnection()->query('TRUNCATE TABLE event_place_stations')->execute();
+
         $output->writeln(['Getting closests stations for each event place', '<info>Calculating...</info>']);
         $this->placeService->getClosestStationsByEventPlace();
         $output->writeln('Done.');
@@ -95,80 +103,33 @@ class AppComputeDataCommand extends ContainerAwareCommand
         $livingPlaceRepo = $this->entityManager->getRepository(LivingPlace::class);
         $stationRepo = $this->entityManager->getRepository(Station::class);
         $touristicPlaceRepo = $this->entityManager->getRepository(TouristicPlace::class);
+        $eventRepo = $this->entityManager->getRepository(EventPlace::class);
 
-        list($frequencies['living_place'], $frequencies['station'], $frequencies['touristic']) = [
-            $livingPlaceRepo->getFrequency(),
-            $this->entityManager->getRepository(Station::class)->getFrequency(),
-            $this->entityManager->getRepository(TouristicPlace::class)->getFrequency()
-        ];
-        $allFrequencies = [];
-        foreach ($frequencies as $frequencyType) {
-            foreach ($frequencyType as $frequency) {
-                foreach ($frequency['frequency'] as $value) {
-                    $allFrequencies[] = (float) $value;
+        $this->updateHints($livingPlaceRepo);
+        $this->updateHints($touristicPlaceRepo);
+        $this->updateHints($stationRepo);
+        $this->updateHints($eventRepo);
+    }
+
+    private function updateHints(EntityRepository $repo)
+    {
+        $places = $repo->getFrequenciesAndId();
+        $index = 0;
+        $chunkSize = 500;
+        foreach ($places as $pInfos) {
+            $slots = [];
+            foreach ($pInfos['frequency'] as $frequency) {
+                $hint = (float) number_format(($frequency * 10) / 10000,2);
+                if ($hint > 0 && $hint < 1) {
+                    $hint = 0.5;
+                } else if ($hint > 10) {
+                    $hint = 10;
+                } else if ($hint == 0) {
+                    $hint = 0;
                 }
+                $slots[] = $hint;
             }
-        }
-
-        $maxValue = array_sum($allFrequencies) / count($allFrequencies);
-        $this->updateHintsLivingPlace($livingPlaceRepo, $maxValue);
-        $this->updateHintsTouristicPlace($touristicPlaceRepo, $maxValue);
-        $this->updateHintsStations($stationRepo, $maxValue);
-    }
-
-    private function updateHintsLivingPlace(LivingPlaceRepository $livingPlaceRepo, $maxValue)
-    {
-
-        $livingPlaces = $livingPlaceRepo->getFrequenciesAndId();
-        $index = 0;
-        $chunkSize = 500;
-        foreach ($livingPlaces as $lpInfos) {
-            $slots = [];
-            foreach ($lpInfos['frequency'] as $frequency) {
-                $slots[] = number_format(($frequency * 10) / $maxValue,2);
-            }
-            $livingPlaceRepo->find($lpInfos['id'])->setHints($slots);
-            $index++;
-            if (($index % $chunkSize) == 0) {
-                $this->entityManager->flush();
-                $this->entityManager->clear();
-            }
-        }
-        $this->entityManager->flush();
-
-    }
-
-    private function updateHintsTouristicPlace(TouristicPlaceRepository $touristicPlaceRepo, $maxValue)
-    {
-        $touristicPlaces = $touristicPlaceRepo->getFrequenciesAndId();
-        $index = 0;
-        $chunkSize = 500;
-        foreach ($touristicPlaces as $tpInfos) {
-            $slots = [];
-            foreach ($tpInfos['frequency'] as $frequency) {
-                $slots[] = number_format(($frequency * 10) / $maxValue,2);
-            }
-            $touristicPlaceRepo->find($tpInfos['id'])->setHints($slots);
-            $index++;
-            if (($index % $chunkSize) == 0) {
-                $this->entityManager->flush();
-                $this->entityManager->clear();
-            }
-        }
-        $this->entityManager->flush();
-    }
-
-    private function updateHintsStations(StationRepository $stationRepo, $maxValue)
-    {
-        $stations = $stationRepo->getFrequenciesAndId();
-        $index = 0;
-        $chunkSize = 500;
-        foreach ($stations as $sInfos) {
-            $slots = [];
-            foreach ($sInfos['frequency'] as $frequency) {
-                $slots[] = number_format(($frequency * 10) / $maxValue,2);
-            }
-            $stationRepo->find($sInfos['id'])->setHints($slots);
+            $repo->find($pInfos['id'])->setHints($slots);
             $index++;
             if (($index % $chunkSize) == 0) {
                 $this->entityManager->flush();

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Services;
 
+use AppBundle\Entity\Event;
 use AppBundle\Entity\EventPlace;
 use AppBundle\Entity\Station;
 use Doctrine\ORM\EntityManager;
@@ -13,12 +14,47 @@ class PlaceService
     /** @var EntityManager $entityManager */
     private $entityManager;
 
+    /** @var TimeService $timeService */
+    private $timeService;
+
     private $math;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, TimeService $timeService)
     {
         $this->entityManager = $entityManager;
+        $this->timeService = $timeService;
         $this->math = new Math();
+    }
+
+    public function getFrequency()
+    {
+        $eventPlaces = $this->entityManager->getRepository(EventPlace::class)->findAll();
+        $dateline = $this->timeService->getTimestamps();
+
+        foreach ($eventPlaces as $eventPlace) {
+            $slots = [];
+            $capacity = $eventPlace->getCapacity();
+            /** @var \DateTime $date */
+            foreach ($dateline as $date) {
+                $filings = [];
+                $events = $this->entityManager->getRepository(Event::class)->getEventsByDates($eventPlace, $date->getTimeStamp(), $date->getTimestamp() + 7600);
+                if (!empty($events)) {
+                    if (count($events) > 1) {
+                        /** @var Event $event */
+                        foreach ($events as $event) {
+                            $filings[] = $event->getFiling();
+                        }
+                        $filingAvg = array_sum($filings) / count($events);
+                        $slots[] = ($filingAvg * $capacity);
+                    } else if (count($events) == 1) {
+                        $slots[] = ((reset($events))->getFiling()) * $capacity;
+                    }
+                }
+                $slots[] = 0;
+            }
+            $eventPlace->setFrequency($slots);
+        }
+        $this->entityManager->flush();
     }
 
     public function getClosestStationsByEventPlace()

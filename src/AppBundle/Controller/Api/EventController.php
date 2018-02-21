@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\Entity\Event;
 use AppBundle\Entity\EventPlace;
+use AppBundle\Entity\Station;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -61,7 +62,7 @@ class EventController extends FOSRestController
                     'dates' => $event->getDates(),
                     'filing' => $event->getFiling(),
                     'step_name' => $event->getStepName(),
-                    'step_final' => $event->isStepFinal()
+                    'step_final' => $event->isStepFinal(),
                 ];
             }
         }
@@ -105,7 +106,7 @@ class EventController extends FOSRestController
      * @param EventPlace $eventPlace
      * @return JsonResponse
      */
-    public function getEventPlaceBydId(Request $request, EventPlace $eventPlace)
+    public function getEventPlaceById(Request $request, EventPlace $eventPlace)
     {
         if (empty($eventPlace)) {
             return new JsonResponse('Event Place not found', 404);
@@ -146,7 +147,14 @@ class EventController extends FOSRestController
                 'dates' => $event->getDates(),
                 'filing' => $event->getFiling(),
                 'step_name' => $event->getStepName(),
-                'step_final' => $event->isStepFinal()
+                'step_final' => $event->isStepFinal(),
+            ];
+        }
+        /** @var Station $station */
+        foreach ($eventPlace->getStationsClosest() as $station) {
+            $payload['features']['properties']['stations_closest'][] = [
+                'line' => $station->getLineHint(),
+                'name' => $station->getName(),
             ];
         }
 
@@ -213,7 +221,7 @@ class EventController extends FOSRestController
                 'step_final' => $event->isStepFinal(),
                 'place_id' => $event->getEventPlace()->getId(),
                 'place_name' => $event->getEventPlace()->getName(),
-                'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
+                'geo_point_2d' => $event->getEventPlace()->getGeoPoint(),
             ]
         );
 
@@ -266,7 +274,7 @@ class EventController extends FOSRestController
                 'step_final' => $event->isStepFinal(),
                 'place_id' => $event->getEventPlace()->getId(),
                 'place_name' => $event->getEventPlace()->getName(),
-                'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
+                'geo_point_2d' => $event->getEventPlace()->getGeoPoint(),
             ]
         );
 
@@ -309,7 +317,7 @@ class EventController extends FOSRestController
             'step_final' => $event->isStepFinal(),
             'place_id' => $event->getEventPlace()->getId(),
             'place_name' => $event->getEventPlace()->getName(),
-            'geo_point_2d' => $event->getEventPlace()->getGeoPoint()
+            'geo_point_2d' => $event->getEventPlace()->getGeoPoint(),
         ];
 
         return new JsonResponse($payload);
