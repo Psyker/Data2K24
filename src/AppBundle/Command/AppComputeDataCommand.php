@@ -126,7 +126,7 @@ class AppComputeDataCommand extends ContainerAwareCommand
                 } else if ($hint > 10) {
                     $hint = 10;
                 } elseif ($hint == 0 || $hint == 0.0) {
-                    $hint = 0.1;
+                    $hint = 0.01;
                 }
                 $slots[] = $hint;
             }
