@@ -36,21 +36,6 @@ class AppImportDataCommand extends ContainerAwareCommand
         'exploitant' => 'setOperator'
     ];
 
-    private $districtSchema = [
-        'geo_point_2d' => 'setGeoPoint',
-        'typ_iris' => 'setTypIris',
-        'p12_pop' => 'setP12Pop',
-        'denspop12' => 'setDensPop12',
-        'p12_h0014' => 'setPop12H0014',
-        'p12_h1529' => 'setP12H1529',
-        'p12_h3044' => 'setP12H3044',
-        'p12_h4559' => 'setP12H4559',
-        'p12_h6074' => 'setP12H6074',
-        'p12_h75p' => 'setP12H75p',
-        'p12_pop60p' => 'setP12Pop60',
-        'p12_pop001' => 'setP12Pop001'
-    ];
-
     private $stationTraficSchema = [
         'ville' => 'setCity',
         'rang' => 'setRank',
@@ -141,7 +126,6 @@ class AppImportDataCommand extends ContainerAwareCommand
         $this->em->getConnection()->query('TRUNCATE TABLE living_place')->execute();
         $this->em->getConnection()->query('TRUNCATE TABLE station_trafic')->execute();
         $this->em->getConnection()->query('TRUNCATE TABLE station')->execute();
-        $this->em->getConnection()->query('TRUNCATE TABLE district')->execute();
         $this->em->getConnection()->query('SET foreign_key_checks = 1;')->execute();
 
 //        dump($this->decode($this->client->get('https://opendata.stif.info/explore/dataset/emplacement-des-gares-idf/download/?format=json&timezone=Europe/Berlin'))[0]);exit;
@@ -158,14 +142,6 @@ class AppImportDataCommand extends ContainerAwareCommand
             'https://opendata.stif.info/explore/dataset/emplacement-des-gares-idf/download/?format=json&timezone=Europe/Berlin',
             Station::class,
             $this->stationSchema,
-            $output
-        );
-
-        // Create Districts from json export.
-        $this->createEntities(
-            'https://public.opendatasoft.com/explore/dataset/iris-demographie/download/?format=json&timezone=Europe/Berlin',
-            District::class,
-            $this->districtSchema,
             $output
         );
 

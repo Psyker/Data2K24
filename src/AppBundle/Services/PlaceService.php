@@ -39,15 +39,16 @@ class PlaceService
                 $filings = [];
                 $events = $this->entityManager->getRepository(Event::class)->getEventsByDates($eventPlace, $date->getTimeStamp(), $date->getTimestamp() + 7600);
                 if (!empty($events)) {
+                    $dayVariation = $this->getDayVariation(date('D', $date->getTimestamp()));
                     if (count($events) > 1) {
                         /** @var Event $event */
                         foreach ($events as $event) {
                             $filings[] = $event->getFiling();
                         }
                         $filingAvg = array_sum($filings) / count($events);
-                        $slots[] = ($filingAvg * $capacity);
+                        $slots[] = ($filingAvg * $capacity) * $dayVariation;
                     } else if (count($events) == 1) {
-                        $slots[] = ((reset($events))->getFiling()) * $capacity;
+                        $slots[] = (((reset($events))->getFiling()) * $capacity) * $dayVariation;
                     }
                 }
                 $slots[] = 0;
@@ -55,6 +56,39 @@ class PlaceService
             $eventPlace->setFrequency($slots);
         }
         $this->entityManager->flush();
+    }
+
+    public function getDayVariation(string $day)
+    {
+        $variation = 0;
+
+        switch ($day) {
+            case 'Mon':
+                $variation = 0.70;
+                break;
+            case 'Tue':
+                $variation = 0.78;
+                break;
+            case 'Wed':
+                $variation = 0.85;
+                break;
+            case 'Thu':
+                $variation = 0.88;
+                break;
+            case 'Fri':
+                $variation = 0.92;
+                break;
+            case 'Sat':
+                $variation = 1;
+                break;
+            case 'Sun':
+                $variation = 0.97;
+                break;
+            default:
+                break;
+        }
+
+        return $variation;
     }
 
     public function getClosestStationsByEventPlace()
