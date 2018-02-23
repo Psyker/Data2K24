@@ -45,7 +45,8 @@ class EventController extends FOSRestController
                     'name' => $eventPlace->getName(),
                     'geo_point_2d' => $eventPlace->getGeoPoint(),
                     'capacity' => $eventPlace->getCapacity(),
-                    'hints' => $eventPlace->getHints()
+                    'hints' => $eventPlace->getHints(),
+                    'stations_closest' => []
                 ],
             ];
             $payload['features'][$key]['geometry'] = [

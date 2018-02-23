@@ -103,7 +103,7 @@ nelmio_api_doc:
             - ^/api/v1
     documentation:
         info:
-            title: Fluidmap API
+            title: fluidmap API
             description: ''
             version: 1.0.0
 

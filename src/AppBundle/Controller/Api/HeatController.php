@@ -103,7 +103,8 @@ class HeatController extends FOSRestController
                 /** @var Event $firstEvent */
                 $payload['features'][] = [
                     'properties' => [
-                        'hint' => $eventPlace->getHints()[$frequencyIndex]
+                        'hint' => $eventPlace->getHints()[$frequencyIndex],
+                        'stations_closest' => []
                     ],
                     'geometry' => [
                         'type' => 'Point',
